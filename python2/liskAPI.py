@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 
-import time, datetime, sys
 import json
 import requests
 import logging
-from pprint import pprint
 
 class liskAPI(object):
 
