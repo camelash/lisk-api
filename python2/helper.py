@@ -217,6 +217,7 @@ def main():
     if args.secret == True or args.option in passphrase_options:
 
         secret = getpass.getpass()
+        print "Confirming the password. Please type it again."
         secret1 = getpass.getpass()
 
         # Simple check. needs revamp
