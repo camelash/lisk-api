@@ -1,3 +1,15 @@
+## How to acquire and use:
+
+
+```
+git clone https://github.com/slasheks/lisk-api.git
+cd lisk-api/python2/
+python helper.py --option account --wallet 12475940823804898745L
+
+```
+
+
+
 ## [Account](Account.md)
 
 Get all the account information based on wallet address
