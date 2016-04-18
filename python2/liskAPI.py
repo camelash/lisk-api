@@ -133,7 +133,7 @@ class liskAPI(object):
                 # Transactions list matched by provided parameters.
                 # GET /api/transactions?blockId=blockId&senderId=senderId&
                 # recipientId=recipientId&limit=limit&offset=offset&orderBy=field
-                'blocktx' : '/api/transactions?blockId=',
+                'blocktx' : '/api/transactions?',
                 # Send transaction to broadcast network.
                 # PUT /api/transactions
                 'send' : '/api/transactions',
@@ -156,13 +156,18 @@ class liskAPI(object):
 
         url = self.target_url + targets[rtype]
 
-        if rtype in req_methods['get'] and payload['id']:
+        if rtype in req_methods['get']:
 
-            url += payload['id']
+            if payload['id'] and not payload['parameters']:
 
-            return self.get_check(url)
+                url += payload['id']
 
-        if rtype in req_methods['get'] and not payload['id']:
+            elif payload['parameters'] and not payload['id']:
+
+                url += payload['parameters']
+
+            elif not payload['id'] and not payload['parameters']:
+                pass
 
             return self.get_check(url)
 
@@ -173,6 +178,7 @@ class liskAPI(object):
         else:
 
             return "Option Not Recognized"
+
 
     def peers(self,rtype,payload={}):
 
@@ -190,13 +196,12 @@ class liskAPI(object):
                 'peer_version' : '/api/peers/version',
             }
 
+
+        url = self.target_url + targets[rtype]
+
         if payload['parameters']:
 
-             url = self.target_url + targets[rtype] + payload['parameters']
-
-        else:
-
-            url = self.target_url + targets[rtype]
+             url += payload['parameters']
 
         return self.get_check(url)
 

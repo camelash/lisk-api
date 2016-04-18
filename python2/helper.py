@@ -168,7 +168,10 @@ def main():
 
     # Transactions
     elif opt in get_txid:
-        payload = {'id':args.all_id}
+        payload = {
+                'id':args.all_id,
+                 'parameters' : args.q_params
+            }
         print json.dumps(api.transactions(opt,payload), indent=2)
 
     elif opt in put_txid:
