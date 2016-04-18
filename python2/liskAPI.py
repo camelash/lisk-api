@@ -37,10 +37,10 @@ class liskAPI(object):
             return error
 
     @staticmethod
-    def put_check(url,payload):
+    def put_check(url,payload,headers):
 
         r = requests.put(url, data=json.dumps(payload),
-            headers=self.headers)
+            headers=headers)
 
         if r.status_code == 200:
 
@@ -95,7 +95,7 @@ class liskAPI(object):
 
         elif rtype in req_methods['put']:
 
-            return self.put_check(url,payload)
+            return self.put_check(url,payload,self.headers)
 
         elif rtype in req_methods['post']:
 
@@ -171,7 +171,7 @@ class liskAPI(object):
 
         elif rtype in req_methods['put']:
 
-            return self.put_check(url,payload)
+            return self.put_check(url,payload,self.headers)
 
         else:
 
@@ -315,7 +315,7 @@ class liskAPI(object):
 
             if 'secret' in payload and 'username' in payload:
 
-                return self.put_check(url,payload)
+                return self.put_check(url,payload,self.headers)
 
             else:
 

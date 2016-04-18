@@ -525,3 +525,35 @@ Return forged amount and rewards
   "fees": 134131682963
 }
 ```
+
+Register delegate name and return confimation
+
+python helper.py -o enable_delegate -p slasheks_api
+
+Password: 
+
+Password: 
+
+```json
+{
+  "transaction": {
+    "fee": 10000000000, 
+    "senderId": "6135290894472857248L", 
+    "timestamp": 32455328, 
+    "requesterPublicKey": null, 
+    "recipientId": null, 
+    "senderPublicKey": "41990964448ce75db7400f26daaf2b50eca217ee5357630e8660b146568eb7e0", 
+    "amount": 0, 
+    "asset": {
+      "delegate": {
+        "username": "slasheks_api", 
+        "publicKey": "41990964448ce75db7400f26daaf2b50eca217ee5357630e8660b146568eb7e0"
+      }
+    }, 
+    "signature": "3e4643f1aad15d03b2cb233d492cc52cb58e58438b3a078e7f83fd6fccc63cadd7f14d6e7f2bebea2707b172d59915f162098dbb88791112599ada24e1eab706", 
+    "type": 2, 
+    "id": "932773045691402128"
+  }, 
+  "success": true
+}
+```

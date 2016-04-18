@@ -48,7 +48,8 @@ def main():
 
     args = parser.parse_args()
 
-    passphrase_options = ['enable_forging','disable_forging','send','genpub','open_account','vote']
+    passphrase_options = ['enable_forging','disable_forging','send',
+        'genpub','open_account','vote','enable_delegate']
     if not args.option:
         parser.print_help()
 
@@ -90,6 +91,7 @@ def main():
     get_peer = ['peer_ip','peer_list','peer_version']
     get_txid = ['blocktx','get_tx','unconfirmed','unconfirmed_all']
     put_txid = ['send']
+    put_delg = ['enable_delegate']
     post_del = ['disable_forging','enable_forging']
     get_delg = ['forged',"delegate_list","delegate_by_tx","votes_by_account","delegate_voters"]
     get_blk = ['my_blocks','blockid','all_blocks','fee','height']
@@ -207,6 +209,14 @@ def main():
     elif opt in post_del:
         #For forging
         payload = { 'secret' : secret }
+        print json.dumps(api.delegates(opt,payload), indent=2)
+
+    elif opt in put_delg:
+
+        payload = {
+                'secret': secret,
+                'username' : args.q_params
+            }
         print json.dumps(api.delegates(opt,payload), indent=2)
 
     # Hybrid call, my voters
