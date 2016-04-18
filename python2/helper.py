@@ -199,7 +199,8 @@ def main():
         payload = {
             'pubkey' : pubkey, #forged and delegate_voters
             'id' : args.all_id, #delegate_by_tx
-            'address' : wallet
+            'address' : wallet,
+            'parameters' : args.q_params
                 }
         print json.dumps(api.delegates(opt,payload), indent=2)
 

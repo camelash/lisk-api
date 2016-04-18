@@ -131,7 +131,7 @@ class liskAPI(object):
                 # Transactions list matched by provided parameters.
                 # GET /api/transactions?blockId=blockId&senderId=senderId&
                 # recipientId=recipientId&limit=limit&offset=offset&orderBy=field
-                'blocktx' : '/api/transactions?',
+                'blocktx' : '/api/transactions',
                 # Send transaction to broadcast network.
                 # PUT /api/transactions
                 'send' : '/api/transactions',
@@ -282,47 +282,52 @@ class liskAPI(object):
                 'forged' : '/api/delegates/forging/getForgedByAccount?generatorPublicKey=',
             }
 
-        states = {
-             'active' : 'getActive',
-             'standby' : 'getStandby',
-            }
-
-        get = ['delegate_list','delegate_by_tx','votes_by_account',
-                'forged','delegate_voters']
-        put = ['enable_delegate']
-        post = ['enable_forging','disable_forging']
+        request_method = {
+                'get' : ['delegate_list','delegate_by_tx','votes_by_account',
+                    'forged','delegate_voters'],
+                'put' : ['enable_delegate'],
+                'post' : ['enable_forging','disable_forging']
+                }
 
         url = self.target_url + targets[rtype]
 
-        if rtype in get:
+        if rtype in request_method['get']:
 
-            if rtype in 'delegate_by_tx':
+            if rtype == 'delegate_by_tx':
 
                 url += payload['id']
 
-            elif rtype in 'votes_by_account':
+            elif rtype == 'votes_by_account':
 
                 url += payload['address']
 
-            elif rtype in 'delegate_voters' or rtype in 'forged':
+            elif rtype == 'delegate_voters' or rtype in 'forged':
 
                 url += payload['pubkey']
 
-            r = requests.get(url)
+            elif rtype == 'delegate_list':
 
-        elif rtype in put:
+                url += payload['parameters']
 
-            url += payload
+            return self.get_check(url)
 
-            r = requests.put(url)
+        elif rtype in request_method['put']:
 
-        elif rtype in post:
+            if 'secret' in payload and 'username' in payload:
+
+                return self.put_check(url,payload)
+
+            else:
+
+                error = {'liskAPI': 'Dictionary does not contain required items'}
+                return error
+
+        elif rtype in request_method['post']:
 
             r = requests.post(url, data=json.dumps(payload),
                 headers=self.headers)
 
-        return json.loads(r.text)
-
+            return json.loads(r.text)
 
     def messages(self,rtype,payload):
 
