@@ -1,8 +1,9 @@
 ## Transactions
 
-Return transactions per block ID
+Return transactions per block ID (supports full sorting options)
 
-`python helper.py --option blocktx --id 3978197175682889993`
+`python helper.py --option blocktx --parameters ?blockId=3978197175682889993`
+
 ```json
 {
   "count": 2,

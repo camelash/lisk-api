@@ -114,7 +114,7 @@ Get all unconfirmed transactions
 
 
 
-## Peers
+## [Peers](Peers.md)
 
 Get full peer list
 
@@ -134,7 +134,7 @@ Get peer information by IP (Not working)
 
 
 
-## Delegates
+## [Delegates](Delegates.md)
 
 Disable forging on the localhost (can be used with the --url flag)
 
