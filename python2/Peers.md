@@ -1,10 +1,10 @@
 ## Peers
 
-Return peerlist no options (cut for brevity)
+Return peerlist no options (supports sorting options | cut for brevity)
 
 `python helper.py -o peer_list`
 
-```
+```json
 {
   "peers": [
     {
