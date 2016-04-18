@@ -5,9 +5,11 @@ Get all the account information based on wallet address
 `python helper.py --option account --wallet 12890373581776525214L`
 
 
+
 Get the balance of an account by wallet address
 
 `python helper.py --option balance --wallet 12890373581776525214L`      
+
 
 
 Get the publicKey of an account by wallet address
@@ -15,14 +17,17 @@ Get the publicKey of an account by wallet address
 `python helper.py --option pubkey --wallet 12890373581776525214L`     
 
 
+
 Generate an account based on a secret phrase
 
 `python helper.py --option genpub`
 
 
+
 Show information of an account based on entering your secret
 
 `python helper.py --option open_account`
+
 
 
 Get the delegates of an account by address
@@ -54,6 +59,7 @@ Example File Layout:
 `python helper.py --option vote --vote-file 33.txt --vote-no`
 
 
+
 ## [Loader](Loader.md)
 
 Get the status of a node by url
@@ -65,6 +71,7 @@ Get the status of a node by url
 `python helper.py --option status --url https://localhost:443`
 
 
+
 Get the sync status of a host based on url
 
 `python helper.py --option sync --url https://login.lisk.io`            
@@ -74,6 +81,7 @@ Get the sync status of a host based on url
 `python helper.py --option sync --url https://localhost:443`
 
 
+
 ## [Transactions](Transactions.md)
 
 Get information of a block by block ID (supports full sorting options with the --parameters flag)
@@ -81,9 +89,11 @@ Get information of a block by block ID (supports full sorting options with the -
 `python helper.py --option blocktx --parameters ?blockId=3978197175682889993`
 
 
+
 Send a transaction with 1 Lisk to the user specified
 
 `python helper.py --option send --destination-id slasheks_i --amount 1`
+
 
 
 Get information on a transaction ID
@@ -91,14 +101,17 @@ Get information on a transaction ID
 `python helper.py --option get_tx --id 1242621300313617250`
 
 
+
 Get information on an unconfirmed transaction by ID
 
 `python helper.py --option unconfirmed --id 1792913617361330271`
 
 
+
 Get all unconfirmed transactions
 
 `python helper.py -o unconfirmed_all`
+
 
 
 ## Peers
@@ -108,14 +121,17 @@ Get full peer list
 `python helper.py -o peer_list`
 
 
+
 Get the version of a peer (can be used with the --url flag)
 
 `python helper.py -o peer_version`
 
 
+
 Get peer information by IP (Not working)
 
 `python helper.py -o peer_ip`
+
 
 
 ## Delegates
@@ -125,9 +141,11 @@ Disable forging on the localhost (can be used with the --url flag)
 `python helper.py -o disable_forging`
 
 
+
 Enable forging on the localhost (can be used with the --url flag)
 
 `python helper.py -o enable_forging`
+
 
 
 Get the delegate votes based on public key of an account
@@ -135,13 +153,14 @@ Get the delegate votes based on public key of an account
 `python helper.py --option delegate_voters --key b2961fd27ba57cc50540d043635f80666e11f143d8fa0fb666fe5cd9495230e9`
 
 
+
 Get forged information on an account based on public key
 
 `python helper.py --option forged --key b57878a79acb36be31171749ec361d16cc0c4a27d2d42f62d6cb0a5405223c69`
 
 
+
 Register a delegate name
 
 `python helper.py --option register_delegate --username slasheks_api`
-
 
