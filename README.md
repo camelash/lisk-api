@@ -14,8 +14,9 @@ python helper.py --option account --wallet 12475940823804898745L
 
 Get all the account information based on wallet address
 
-`python helper.py --option account --wallet 12890373581776525214L`
-
+```
+python helper.py --option account --wallet 12890373581776525214L
+```
 
 
 Get the balance of an account by wallet address
@@ -23,11 +24,9 @@ Get the balance of an account by wallet address
 `python helper.py --option balance --wallet 12890373581776525214L`      
 
 
-
 Get the publicKey of an account by wallet address
 
 `python helper.py --option pubkey --wallet 12890373581776525214L`     
-
 
 
 Generate an account based on a secret phrase
@@ -35,11 +34,9 @@ Generate an account based on a secret phrase
 `python helper.py --option genpub`
 
 
-
 Show information of an account based on entering your secret
 
 `python helper.py --option open_account`
-
 
 
 Get the delegates of an account by address
