@@ -21,34 +21,48 @@ python helper.py --option account --wallet 12890373581776525214L
 
 Get the balance of an account by wallet address
 
-`python helper.py --option balance --wallet 12890373581776525214L`      
+```
+python helper.py --option balance --wallet 12890373581776525214L
+````
 
 
 Get the publicKey of an account by wallet address
 
-`python helper.py --option pubkey --wallet 12890373581776525214L`     
+```
+python helper.py --option pubkey --wallet 12890373581776525214L
+```
 
 
 Generate an account based on a secret phrase
 
-`python helper.py --option genpub`
+```
+python helper.py --option genpub
+```
 
 
 Show information of an account based on entering your secret
 
-`python helper.py --option open_account`
+```
+python helper.py --option open_account
+```
 
 
 Get the delegates of an account by address
 
-`python helper.py --option delegates_by_account --wallet 12475940823804898745L`
+```
+python helper.py --option delegates_by_account --wallet 12475940823804898745L
+```
 
 Vote for accounts in a file. File must have public keys of desired voters
 
 
-`python helper.py --option vote --vote-file 33.txt --vote-yes`
+```
+python helper.py --option vote --vote-file 33.txt --vote-yes
+```
 
-`python helper.py --option vote --vote-file 33.txt --vote-no`
+```
+python helper.py --option vote --vote-file 33.txt --vote-no
+```
 
 
 Using --vote-yes will vote for these delegates
@@ -75,21 +89,33 @@ Example File Layout:
 
 Get the status of a node by url
 
-`python helper.py --option status --url http://localhost:7000`
+```
+python helper.py --option status --url http://localhost:7000
+```
 
-`python helper.py --option status --url https://login.lisk.io`
+```
+python helper.py --option status --url https://login.lisk.io
+```
 
-`python helper.py --option status --url https://localhost:443`
+```
+python helper.py --option status --url https://localhost:443
+```
 
 
 
 Get the sync status of a host based on url
 
-`python helper.py --option sync --url https://login.lisk.io`            
+```
+python helper.py --option sync --url https://login.lisk.io
+```
 
-`python helper.py --option sync --url http://localhost:7000`
+```
+python helper.py --option sync --url http://localhost:7000
+```
 
-`python helper.py --option sync --url https://localhost:443`
+```
+python helper.py --option sync --url https://localhost:443
+```
 
 
 
@@ -97,31 +123,41 @@ Get the sync status of a host based on url
 
 Get information of a block by block ID (supports full sorting options with the --parameters flag)
 
-`python helper.py --option blocktx --parameters ?blockId=3978197175682889993`
+```
+python helper.py --option blocktx --parameters ?blockId=3978197175682889993
+````
 
 
 
 Send a transaction with 1 Lisk to the user specified
 
-`python helper.py --option send --destination-id slasheks_i --amount 1`
+```
+python helper.py --option send --destination-id slasheks_i --amount 1
+````
 
 
 
 Get information on a transaction ID
 
-`python helper.py --option get_tx --id 1242621300313617250`
+```
+python helper.py --option get_tx --id 1242621300313617250
+```
 
 
 
 Get information on an unconfirmed transaction by ID
 
-`python helper.py --option unconfirmed --id 1792913617361330271`
+```
+python helper.py --option unconfirmed --id 1792913617361330271
+```
 
 
 
 Get all unconfirmed transactions
 
-`python helper.py -o unconfirmed_all`
+```
+python helper.py -o unconfirmed_all
+````
 
 
 
@@ -129,19 +165,25 @@ Get all unconfirmed transactions
 
 Get full peer list
 
-`python helper.py -o peer_list`
+```
+python helper.py -o peer_list
+```
 
 
 
 Get the version of a peer (can be used with the --url flag)
 
-`python helper.py -o peer_version`
+```
+python helper.py -o peer_version
+```
 
 
 
 Get peer information by IP (Not working)
 
-`python helper.py -o peer_ip`
+```
+python helper.py -o peer_ip
+```
 
 
 
@@ -149,29 +191,39 @@ Get peer information by IP (Not working)
 
 Disable forging on the localhost (can be used with the --url flag)
 
-`python helper.py -o disable_forging`
+```
+python helper.py -o disable_forging
+```
 
 
 
 Enable forging on the localhost (can be used with the --url flag)
 
-`python helper.py -o enable_forging`
+```
+python helper.py -o enable_forging
+```
 
 
 
 Get the delegate votes based on public key of an account
 
-`python helper.py --option delegate_voters --key b2961fd27ba57cc50540d043635f80666e11f143d8fa0fb666fe5cd9495230e9`
+```
+python helper.py --option delegate_voters --key b2961fd27ba57cc50540d043635f80666e11f143d8fa0fb666fe5cd9495230e9
+```
 
 
 
 Get forged information on an account based on public key
 
-`python helper.py --option forged --key b57878a79acb36be31171749ec361d16cc0c4a27d2d42f62d6cb0a5405223c69`
+```
+python helper.py --option forged --key b57878a79acb36be31171749ec361d16cc0c4a27d2d42f62d6cb0a5405223c69
+```
 
 
 
 Register a delegate name
 
-`python helper.py --option register_delegate --username slasheks_api`
+```
+python helper.py --option register_delegate --username slasheks_api
+```
 
