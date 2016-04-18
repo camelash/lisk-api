@@ -528,7 +528,7 @@ Return forged amount and rewards
 
 Register delegate name and return confimation
 
-python helper.py -o enable_delegate -p slasheks_api
+python helper.py -o register_delegate -p slasheks_api
 
 Password: 
 
@@ -555,5 +555,18 @@ Password:
     "id": "932773045691402128"
   }, 
   "success": true
+}
+```
+
+python helper.py --option register_delegate --username slasheks_api
+
+Password: 
+
+Password: 
+
+```json
+{
+  "success": false, 
+  "error": "Account already has a username"
 }
 ```

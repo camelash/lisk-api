@@ -31,6 +31,9 @@ def main():
     parser.add_argument('-a','--amount',dest='amount',action='store',
         type=float,help='amount to send')
 
+    parser.add_argument('--username',dest='username',action='store',
+        default='',help='Username/delegate name')
+
     parser.add_argument('-s','--secret',dest='secret',action='store_true',
         default=False,help='secret pass phrase')
 
@@ -49,7 +52,7 @@ def main():
     args = parser.parse_args()
 
     passphrase_options = ['enable_forging','disable_forging','send',
-        'genpub','open_account','vote','enable_delegate']
+        'genpub','open_account','vote','register_delegate']
     if not args.option:
         parser.print_help()
 
@@ -91,7 +94,7 @@ def main():
     get_peer = ['peer_ip','peer_list','peer_version']
     get_txid = ['blocktx','get_tx','unconfirmed','unconfirmed_all']
     put_txid = ['send']
-    put_delg = ['enable_delegate']
+    put_delg = ['register_delegate']
     post_del = ['disable_forging','enable_forging']
     get_delg = ['forged',"delegate_list","delegate_by_tx","votes_by_account","delegate_voters"]
     get_blk = ['my_blocks','blockid','all_blocks','fee','height']
@@ -215,7 +218,7 @@ def main():
 
         payload = {
                 'secret': secret,
-                'username' : args.q_params
+                'username' : args.username
             }
         print json.dumps(api.delegates(opt,payload), indent=2)
 

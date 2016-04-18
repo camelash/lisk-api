@@ -251,7 +251,7 @@ class liskAPI(object):
 
                 # Enable delegate on account
                 # PUT /api/delegates
-                'enable_delegate' : '/api/delegates',
+                'register_delegate' : '/api/delegates',
 
                 # Get delegates list.
                 # GET /api/delegates?limit=limit&offset=offset&orderBy=orderBy
@@ -285,7 +285,7 @@ class liskAPI(object):
         request_method = {
                 'get' : ['delegate_list','delegate_by_tx','votes_by_account',
                     'forged','delegate_voters'],
-                'put' : ['enable_delegate'],
+                'put' : ['register_delegate'],
                 'post' : ['enable_forging','disable_forging']
                 }
 
