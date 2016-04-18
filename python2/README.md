@@ -36,6 +36,12 @@ Get the delegates of an account by address
 
 Vote for accounts in a file. File must have public keys of desired voters
 
+
+`python helper.py --option vote --vote-file 33.txt --vote-yes`
+
+`python helper.py --option vote --vote-file 33.txt --vote-no`
+
+
 Using --vote-yes will vote for these delegates
 
 Using --vote-no will take away the votes
@@ -53,10 +59,6 @@ Example File Layout:
 2e6b568a370a4f107e4a5124ab680f6bc97bd1634c3a4d83bcfaf49830f24b6a
 4fbda6b316fa930c3a93cd5b1d82d5fd107d11d95a238c64af472bb8269778b2
 ```
-
-`python helper.py --option vote --vote-file 33.txt --vote-yes`
-
-`python helper.py --option vote --vote-file 33.txt --vote-no`
 
 
 
