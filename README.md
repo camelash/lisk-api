@@ -10,6 +10,10 @@ python helper.py --option account --wallet 12475940823804898745L
 
 ```
 
+## Disclaimer
+
+Please be very careful with the options that require secret. There is no turning back. 
+
 
 
 ## [Account](Account.md)
@@ -35,14 +39,14 @@ python helper.py --option pubkey --wallet 12890373581776525214L
 ```
 
 
-Generate an account based on a secret phrase
+Generate an account based on a secret phrase (Requires Secret)
 
 ```
 python helper.py --option genpub
 ```
 
 
-Show information of an account based on entering your secret
+Show information of an account based on entering your secret (Requires Secret)
 
 ```
 python helper.py --option open_account
@@ -55,7 +59,7 @@ Get the delegates of an account by address
 python helper.py --option delegates_by_account --wallet 12475940823804898745L
 ```
 
-Vote for accounts in a file. File must have public keys of desired voters
+Vote for accounts in a file. File must have public keys of desired voters (Requires secret)
 
 
 ```
@@ -131,7 +135,7 @@ python helper.py --option blocktx --parameters ?blockId=3978197175682889993
 
 
 
-Send a transaction with 1 Lisk to the user specified
+Send a transaction with 1 Lisk to the user specified (Requires secret)
 
 ```
 python helper.py --option send --destination-id slasheks_i --amount 1
@@ -191,7 +195,7 @@ python helper.py -o peer_ip
 
 ## [Delegates](Delegates.md)
 
-Disable forging on the localhost (can be used with the --url flag)
+Disable forging on the localhost (can be used with the --url flag, Requires secret)
 
 ```
 python helper.py -o disable_forging
@@ -199,7 +203,7 @@ python helper.py -o disable_forging
 
 
 
-Enable forging on the localhost (can be used with the --url flag)
+Enable forging on the localhost (can be used with the --url flag, Requires secret)
 
 ```
 python helper.py -o enable_forging
@@ -223,7 +227,7 @@ python helper.py --option forged --key b57878a79acb36be31171749ec361d16cc0c4a27d
 
 
 
-Register a delegate name
+Register a delegate name (requires secret)
 
 ```
 python helper.py --option register_delegate --username slasheks_api
