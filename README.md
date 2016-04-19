@@ -12,8 +12,9 @@ python helper.py --option account --wallet 12475940823804898745L
 
 ## Disclaimer
 
+```
 Please be very careful with the options that require secret. There is no turning back. 
-
+```
 
 
 ## [Account](Account.md)
