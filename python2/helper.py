@@ -115,7 +115,7 @@ def transactionput(api,args,secret):
 
 def blocksget(api,args):
 
-    payload = {'id' : args.all_id,
+    payload = {'parameters' : args.q_params,
             'pubkey' : args.pubkey,
         }
 
