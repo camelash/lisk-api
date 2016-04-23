@@ -341,14 +341,19 @@ class liskAPI(object):
 
         url = self.target_url + targets[rtype]
 
-        r = requests.put(url, data=json.dumps(payload),
-            headers=self.headers)
+        return self.put_check(url,payload,self.headers)
 
-        return json.loads(r.text)
+    def usernames(self,rtype,payload):
 
+        targets = {
+                # Register username.
+                # PUT /api/accounts/username
+                'register_username' : '/api/accounts/username'
+            }
 
-    def usernames(self):
-        pass
+        url = self.target_url + targets[rtype]
+
+        return self.put_check(url,payload,self.headers)
 
     def contacts(self):
         pass
@@ -359,6 +364,9 @@ class liskAPI(object):
     def multisg(self):
         pass
 
+    def autoaccount(self):
+        # Combine account generation and username generation. 
+        pass
 
     def my_voters(self,wallet):
 

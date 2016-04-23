@@ -145,6 +145,19 @@ def delegatesput(api,args,secret):
         }
     print json.dumps(api.delegates(args.option,payload), indent=2)
 
+def usernameput(api,args,secret,secret2):
+
+    payload = {
+            'secret': secret,
+            'username' : args.username
+        }
+
+    if args.second_secret:
+
+        payload['secondSecret'] = secret2
+
+    print json.dumps(api.usernames(args.option,payload), indent=2)
+
 
 def main():
 
@@ -194,7 +207,8 @@ def main():
     args = parser.parse_args()
 
     passphrase_options = ['enable_forging','disable_forging','send',
-        'genpub','open_account','vote','register_delegate']
+        'genpub','open_account','vote','register_delegate',
+        'register_username']
 
     if not args.option:
 
@@ -213,6 +227,9 @@ def main():
                     pubkey\
                     "
             exit(1)
+
+    secret = ''
+    secret2 = ''
 
     if args.secret == True or args.option in passphrase_options:
 
@@ -245,7 +262,8 @@ def main():
             'put_delg' : ['register_delegate'],
             'post_del' : ['disable_forging','enable_forging'],
             'get_delg' : ['forged',"delegate_list","delegate_by_tx","votes_by_account","delegate_voters"],
-            'get_blk': ['my_blocks','blockid','all_blocks','fee','height']
+            'get_blk': ['my_blocks','blockid','all_blocks','fee','height'],
+            'put_usrn' : ['register_username']
         }
 
 
@@ -294,6 +312,11 @@ def main():
     elif args.option in targets['put_delg']:
 
         delegatesput(api,args,secret)
+
+    # Usernames
+    elif args.option in targets['put_usrn']:
+
+        usernameput(api,args,secret,secret2)
 
     # Hybrid call, my voters
     elif args.option == 'my_voters':
