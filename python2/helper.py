@@ -107,7 +107,7 @@ def transactionput(api,args,secret):
             payload = {
                 'secret' : secret,
                 'recipientId' : args.dst_id,
-                'amount' : args.amount
+                'amount' : int(amount)
                 #'publicKey' : args.pubkey # needs pubkey to verify optional
             }
 
