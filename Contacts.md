@@ -21,6 +21,8 @@ Get unconfirmed contacts based on publicKey
 
 ```
 python helper.py --option unconfirmed_contacts --key a6ed31b0dce156779b77f8e1c723af0ce04dbb74520979b76866da56ede4462f
+```
+
 ```json
 {
   "success": true, 
@@ -44,6 +46,7 @@ python helper.py --option unconfirmed_contacts --key a6ed31b0dce156779b77f8e1c72
     }
   ]
 }
+```
 
 Contact request (requires secret)
 
@@ -53,6 +56,7 @@ Password:
 Confirming the password. Please type it again.
 Password: 
 ```
+
 ```json
 {
   "transaction": {
