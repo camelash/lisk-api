@@ -234,3 +234,22 @@ Register a delegate name (requires secret)
 python helper.py --option register_delegate --username slasheks_api
 ```
 
+## [Contacts](Contacts.md)
+
+Get the contacts of an account by publiKey
+
+```
+python helper.py --option contacts --key a69ed828f28695a03558d5c29f96081d20d1ecc0e046e8622793ab2662629901
+```
+
+Get unconfirmed contacts based on publicKey
+
+```
+python helper.py --option unconfirmed_contacts --key a6ed31b0dce156779b77f8e1c723af0ce04dbb74520979b76866da56ede4462f
+```
+
+Contact request (requires secret)
+
+```
+python helper.py -o add_contact --username slasheks2
+```

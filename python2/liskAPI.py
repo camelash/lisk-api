@@ -355,8 +355,37 @@ class liskAPI(object):
 
         return self.put_check(url,payload,self.headers)
 
-    def contacts(self):
-        pass
+    def contacts(self,rtype,payload):
+
+        targets = {
+                # Add contact
+                # PUT /api/contacts
+                'add_contact' : '/api/contacts',
+                # Get contacts of account by public key.
+                # GET /api/contacts/?publicKey=publicKey
+                'contacts' : '/api/contacts/?publicKey=',
+                # Get unconfirmed contacts of account by public key.
+                # /api/contacts/unconfirmed?publicKey=publicKey
+                'unconfirmed_contacts' : '/api/contacts/unconfirmed?publicKey='
+            }
+
+        request_method = {
+                'get' : ['contacts','unconfirmed_contacts'],
+                'put' : ['add_contact']
+            }
+
+        if rtype in request_method['get']:
+
+            url = '{}{}{}'.format(self.target_url,targets[rtype],payload['pubkey'])
+
+            return self.get_check(url)
+
+        elif rtype in request_method['put']:
+
+            url = '{}{}'.format(self.target_url,targets[rtype])
+
+            return self.put_check(url,payload,self.headers)
+
 
     def dapps(self):
         pass
@@ -364,8 +393,14 @@ class liskAPI(object):
     def multisg(self):
         pass
 
+    # Custom Wrappers
+
     def autoaccount(self):
         # Combine account generation and username generation. 
+        pass
+
+    def autoname(self):
+        # Give a username get account information
         pass
 
     def my_voters(self,wallet):

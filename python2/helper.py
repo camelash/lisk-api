@@ -152,11 +152,44 @@ def usernameput(api,args,secret,secret2):
             'username' : args.username
         }
 
-    if args.second_secret:
+    if args.second_passphrase:
 
         payload['secondSecret'] = secret2
 
     print json.dumps(api.usernames(args.option,payload), indent=2)
+
+def contactget(api,args):
+
+    payload = {
+            'pubkey' : args.pubkey
+        }
+
+    print json.dumps(api.contacts(args.option,payload), indent=2)
+
+def contactput(api,args,secret,secret2):
+
+    payload = {
+            'secret' : secret
+        }
+
+    if args.second_passphrase == True:
+
+        payload['secondSecret'] = secret2
+
+    if args.username and not args.wallet:
+
+        payload['following'] = "+{}".format(args.username)
+
+    elif args.wallet and not args.username:
+
+        payload['following'] = "+{}".format(args.wallet)
+
+    else:
+
+        print 'Options Missmatch, Please choose a destination wallet or name'
+        exit(1)
+
+    print json.dumps(api.contacts(args.option,payload), indent=2)
 
 
 def main():
@@ -166,7 +199,7 @@ def main():
         required=True,help='Query option')
 
     parser.add_argument('-w','--wallet',dest='wallet',action='store',
-        default='2994830225868734490L',help='Wallet')
+        help='Wallet')
 
     parser.add_argument('-k','--key',dest='pubkey',action='store',
         help='Public Key')
@@ -189,7 +222,7 @@ def main():
     parser.add_argument('-s','--secret',dest='secret',action='store_true',
         default=False,help='secret pass phrase')
 
-    parser.add_argument('-2s','--second-secret',dest='second_secret',action='store_true',
+    parser.add_argument('-2s','--second-secret',dest='second_passphrase',action='store_true',
         default=False,help='secret pass phrase')
 
     parser.add_argument('--vote-no',dest='vote_no',action='store_true',
@@ -208,7 +241,7 @@ def main():
 
     passphrase_options = ['enable_forging','disable_forging','send',
         'genpub','open_account','vote','register_delegate',
-        'register_username']
+        'register_username','add_contact']
 
     if not args.option:
 
@@ -234,7 +267,7 @@ def main():
     if args.secret == True or args.option in passphrase_options:
 
         secret = getpass.getpass()
-        print "Confirming the password. Please type it again."
+        print "Confirming the passphrase. Please type it again."
         secret1 = getpass.getpass()
 
         # Simple check. needs revamp
@@ -243,10 +276,17 @@ def main():
             print "Passprase does not match. Please try again"
             exit(1)
 
-        if args.second_secret:
+        if args.second_passphrase:
 
-            secret_2 = getpass.getpass()
-            secret1_2 = getpass.getpass()
+            print "\nPlease enter your second passphrase:"
+            secret2 = getpass.getpass()
+            print "Confirming the passphrase. Please type it again."
+            secret3 = getpass.getpass()
+
+            if secret2 != secret3:
+
+                print "Passprase does not match. Please try again"
+                exit(1)
 
 
     # Instanciate
@@ -263,7 +303,9 @@ def main():
             'post_del' : ['disable_forging','enable_forging'],
             'get_delg' : ['forged',"delegate_list","delegate_by_tx","votes_by_account","delegate_voters"],
             'get_blk': ['my_blocks','blockid','all_blocks','fee','height'],
-            'put_usrn' : ['register_username']
+            'put_usrn' : ['register_username'],
+            'get_cntc' : ['contacts','unconfirmed_contacts'],
+            'put_cntc' : ['add_contact']
         }
 
 
@@ -317,6 +359,15 @@ def main():
     elif args.option in targets['put_usrn']:
 
         usernameput(api,args,secret,secret2)
+
+    # Contacts
+    elif args.option in targets['get_cntc']:
+
+        contactget(api,args)
+
+    elif args.option in targets['put_cntc']:
+
+        contactput(api,args,secret,secret2)
 
     # Hybrid call, my voters
     elif args.option == 'my_voters':
