@@ -89,9 +89,15 @@ class liskAPI(object):
 
         if rtype in req_methods['get']:
 
-            url = self.target_url + targets[rtype] + payload['address']
+            if not payload['address']:
 
-            return self.get_check(url)
+                return "Address not defined"
+
+            else:
+
+                url = self.target_url + targets[rtype] + payload['address']
+
+                return self.get_check(url)
 
         elif rtype in req_methods['put']:
 

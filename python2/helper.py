@@ -20,7 +20,11 @@ def accountget(api,args):
 
     print json.dumps(api.account(args.option,payload), indent=2)
 
-def accountput(api,args,secret):
+def check2pass(api,args):
+
+    pass
+
+def accountput(api,args,secret,secret2):
 
     if args.option == 'open_account' and secret:
 
@@ -59,6 +63,10 @@ def accountput(api,args,secret):
                 else:
 
                     print "Found a non matching line in the file. Quitting."
+                    exit(1)
+
+        if second_passphrase == True:
+            payload['secondSecret'] = secret2
 
         payload = {
                 'secret' : secret,
@@ -66,9 +74,6 @@ def accountput(api,args,secret):
                 #'secondSecret' : '',
                 'delegates' : pubkey_list
             }
-
-        # if secret2 == True:
-        #    payload['secondSecret'] = secret2
 
     elif args.option == 'genpub':
 
