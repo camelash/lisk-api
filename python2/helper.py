@@ -36,6 +36,7 @@ def accountput(api,args,secret,secret2):
 
         hex_match = re.compile(r'^[A-Za-z0-9]{64}$')
         pubkey_list = []
+        payload['secret'] = secret
         vote_type = ''
 
         if args.vote_no == True and not args.vote_yes:
@@ -67,13 +68,35 @@ def accountput(api,args,secret,secret2):
                     print "Found a non matching line in the file. Quitting."
                     exit(1)
 
+            if len(pubkey_list) <= 101:
+
+                i = 0
+                while i < 4:
+                    lista = pubkey_list[0:33]
+                    del pubkey_list[:33]
+                    i += 1
+
+                    payload['delegates'] = lista
+
+                    if len(lista) == 0:
+                        exit(1)
+                    else:
+                        print json.dumps(api.account(args.option,payload), indent=2)
+
+                exit(1)
+
+            elif len(pubkey_list) > 101:
+
+                print "Voter list contains more than 101 addresses"
+                exit(1)
+
+
         if args.second_passphrase == True:
             payload['secondSecret'] = secret2
 
         payload = {
                 'secret' : secret,
                 #'publicKey' : '',
-                #'secondSecret' : '',
                 'delegates' : pubkey_list
             }
 
