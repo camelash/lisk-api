@@ -26,9 +26,11 @@ def check2pass(api,args):
 
 def accountput(api,args,secret,secret2):
 
+    payload = {}
+
     if args.option == 'open_account' and secret:
 
-        payload = {'secret' : secret}
+        payload['secret'] = secret
 
     elif args.option == 'vote' and secret:
 
@@ -65,7 +67,7 @@ def accountput(api,args,secret,secret2):
                     print "Found a non matching line in the file. Quitting."
                     exit(1)
 
-        if second_passphrase == True:
+        if args.second_passphrase == True:
             payload['secondSecret'] = secret2
 
         payload = {
@@ -197,6 +199,15 @@ def contactput(api,args,secret,secret2):
     print json.dumps(api.contacts(args.option,payload), indent=2)
 
 
+def signatureput(api,args,secret,secret2):
+
+    payload = {
+        'secret' : secret,
+        'secondSecret' : secret2
+        }
+
+    print json.dumps(api.signatures(args.option,payload), indent=2)
+
 def main():
 
     parser = argparse.ArgumentParser(description='LISK API Interface')
@@ -246,7 +257,9 @@ def main():
 
     passphrase_options = ['enable_forging','disable_forging','send',
         'genpub','open_account','vote','register_delegate',
-        'register_username','add_contact']
+        'register_username','add_contact','gen_2_sig']
+
+    twopassphrase_options = ['gen_2_sig']
 
     if not args.option:
 
@@ -281,7 +294,7 @@ def main():
             print "Passprase does not match. Please try again"
             exit(1)
 
-        if args.second_passphrase:
+        if args.second_passphrase or args.option in twopassphrase_options:
 
             print "\nPlease enter your second passphrase:"
             secret2 = getpass.getpass()
@@ -310,7 +323,9 @@ def main():
             'get_blk': ['my_blocks','blockid','all_blocks','fee','height'],
             'put_usrn' : ['register_username'],
             'get_cntc' : ['contacts','unconfirmed_contacts'],
-            'put_cntc' : ['add_contact']
+            'put_cntc' : ['add_contact'],
+            'put_sign' : ['gen_2_sig'],
+            'get_sign' : ['get_signature']
         }
 
 
@@ -326,7 +341,7 @@ def main():
 
     elif args.option in targets['put_acct']:
 
-        accountput(api,args,secret)
+        accountput(api,args,secret,secret2)
 
     # Peers - TODO: peer_ip -- DONE: peer_list, peer_version
     elif args.option in targets['get_peer']:
@@ -373,6 +388,10 @@ def main():
     elif args.option in targets['put_cntc']:
 
         contactput(api,args,secret,secret2)
+
+    elif args.option in targets['put_sign']:
+
+        signatureput(api,args,secret,secret2)
 
     # Hybrid call, my voters
     elif args.option == 'my_voters':
