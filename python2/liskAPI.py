@@ -248,8 +248,37 @@ class liskAPI(object):
         return self.get_check(url)
 
 
-    def signatures(self):
-        pass
+    def signatures(self,rtype,payload={}):
+
+	targets = {
+
+            # Get second signature of account.
+            # GET /api/signatures/get?id=id
+            'get_signature' : '/api/signatures/get?id=',
+
+            # Add second signature to account.
+            # PUT /api/signatures
+            'gen_2_sig' : '/api/signatures',
+
+        }
+
+    
+        request_method = {
+                'get' : ['get_signature'],
+                'put' : ['gen_2_sig']
+            }
+
+        url = self.target_url + targets[rtype]
+
+        if rtype in request_method['get']:
+
+            url = self.target_url + targets[rtype] + payload['id']
+
+            return self.get_check(url)
+
+        elif rtype in request_method['put']:
+
+            return self.put_check(url,payload,self.headers)
 
     def delegates(self,rtype,payload={}):
 
