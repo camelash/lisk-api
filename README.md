@@ -176,7 +176,11 @@ Get full peer list
 python helper.py -o peer_list
 ```
 
+Get peers filtered
 
+```
+python helper.py -o peer_list -p "?version=0.2.0"
+```
 
 Get the version of a peer (can be used with the --url flag)
 
@@ -202,7 +206,17 @@ Disable forging on the localhost (can be used with the --url flag, Requires secr
 python helper.py -o disable_forging
 ```
 
+Delegate list all
 
+```
+python helper.py -o delegate_list
+```
+
+Delegate list filtered (order by rank only display 2)
+
+```
+python helper.py -o delegate_list -p "?orderBy=rate&limit=2"
+```
 
 Enable forging on the localhost (can be used with the --url flag, Requires secret)
 
