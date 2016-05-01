@@ -6,7 +6,7 @@ git clone https://github.com/slasheks/lisk-api.git
 
 cd lisk-api/python2/
 
-python helper.py --option account --wallet 12475940823804898745L
+python helper.py --option account --wallet 15797964559913448387L
 
 ```
 
@@ -16,36 +16,9 @@ python helper.py --option account --wallet 12475940823804898745L
 Please be very careful with the options that require secret. There is no turning back. 
 ```
 
+---
 
 ## [Account](Account.md)
-
-Get all the account information based on wallet address
-
-```
-python helper.py --option account --wallet 12890373581776525214L
-```
-
-
-Get the balance of an account by wallet address
-
-```
-python helper.py --option balance --wallet 12890373581776525214L
-````
-
-
-Get the publicKey of an account by wallet address
-
-```
-python helper.py --option pubkey --wallet 12890373581776525214L
-```
-
-
-Generate an account based on a secret phrase (Requires Secret)
-
-```
-python helper.py --option genpub
-```
-
 
 Show information of an account based on entering your secret (Requires Secret)
 
@@ -53,11 +26,34 @@ Show information of an account based on entering your secret (Requires Secret)
 python helper.py --option open_account
 ```
 
+Get the balance of an account by wallet address
+
+```
+python helper.py --option balance --wallet 15797964559913448387L 
+````
+
+Get the publicKey of an account by wallet address
+
+```
+python helper.py --option pubkey --wallet 15797964559913448387L
+```
+
+Generate an account based on a secret phrase (Requires Secret)
+
+```
+python helper.py --option genpub
+```
+
+Get all the account information based on wallet address
+
+```
+python helper.py --option account --wallet 15797964559913448387L 
+```
 
 Get the delegates of an account by address
 
 ```
-python helper.py --option delegates_by_account --wallet 12475940823804898745L
+python helper.py --option delegates_by_account --wallet 15797964559913448387L
 ```
 
 Vote for accounts in a file. File must have public keys of desired voters (Requires secret)
@@ -70,7 +66,6 @@ python helper.py --option vote --vote-file 33.txt --vote-yes
 ```
 python helper.py --option vote --vote-file 33.txt --vote-no
 ```
-
 
 Using --vote-yes will vote for these delegates
 
@@ -90,7 +85,7 @@ Example File Layout:
 4fbda6b316fa930c3a93cd5b1d82d5fd107d11d95a238c64af472bb8269778b2
 ```
 
-
+---
 
 ## [Loader](Loader.md)
 
@@ -108,8 +103,6 @@ python helper.py --option status --url https://login.lisk.io
 python helper.py --option status --url https://localhost:443
 ```
 
-
-
 Get the sync status of a host based on url
 
 ```
@@ -124,49 +117,7 @@ python helper.py --option sync --url http://localhost:7000
 python helper.py --option sync --url https://localhost:443
 ```
 
-
-
-## [Transactions](Transactions.md)
-
-Get information of a block by block ID (supports full sorting options with the --parameters flag)
-
-```
-python helper.py --option blocktx --parameters ?blockId=3978197175682889993
-````
-
-
-
-Send a transaction with 1 Lisk to the user specified (Requires secret)
-
-```
-python helper.py --option send --destination-id slasheks_i --amount 1
-````
-
-
-
-Get information on a transaction ID
-
-```
-python helper.py --option get_tx --id 1242621300313617250
-```
-
-
-
-Get information on an unconfirmed transaction by ID
-
-```
-python helper.py --option unconfirmed --id 1792913617361330271
-```
-
-
-
-Get all unconfirmed transactions
-
-```
-python helper.py -o unconfirmed_all
-````
-
-
+---
 
 ## [Peers](Peers.md)
 
@@ -188,15 +139,95 @@ Get the version of a peer (can be used with the --url flag)
 python helper.py -o peer_version
 ```
 
-
-
 Get peer information by IP (Not working)
 
 ```
 python helper.py -o peer_ip
 ```
 
+---
 
+## [Blocks](Blocks.md)
+
+Get block by id
+
+```
+python helper.py --option blockid -p 9356270975884285392
+```
+
+Get all blocks
+
+```
+python helper.py --option all_blocks
+```
+
+Get blocks filtered (all options apply)
+
+```
+python helper.py --option all_blocks --parameter "?offset=0&limit=2"
+
+```
+
+Get fee details
+```
+python helper.py --option fee
+```
+
+Get block height
+
+```
+python helper.py --option height
+```
+
+My Forged Blocks (custom search)
+
+```
+python helper.py --option my_blocks --key 00520a82e7e37b882eddcce4055f04f874c5cfcbcf1b306a63d7552dd1f6c65a
+```
+
+## [Signatures](Signatures.md)
+
+Get second signature of account
+
+```
+
+```
+
+---
+
+## [Transactions](Transactions.md)
+
+Get information of a block by block ID (supports full sorting options with the --parameters flag)
+
+```
+python helper.py --option blocktx --parameters ?blockId=9356270975884285392
+````
+
+Send a transaction with 1 Lisk to the user specified (Requires secret)
+
+```
+python helper.py --option send --destination-id slasheks_i --amount 1
+````
+
+Get information on a transaction ID
+
+```
+python helper.py --option get_tx --id 5454912568800551930
+```
+
+Get information on an unconfirmed transaction by ID
+
+```
+python helper.py --option unconfirmed --id 11723095834372015459
+```
+
+Get all unconfirmed transactions
+
+```
+python helper.py -o unconfirmed_all
+````
+
+---
 
 ## [Delegates](Delegates.md)
 
@@ -224,23 +255,17 @@ Enable forging on the localhost (can be used with the --url flag, Requires secre
 python helper.py -o enable_forging
 ```
 
-
-
 Get the delegate votes based on public key of an account
 
 ```
-python helper.py --option delegate_voters --key b2961fd27ba57cc50540d043635f80666e11f143d8fa0fb666fe5cd9495230e9
+python helper.py --option delegate_voters --key 00520a82e7e37b882eddcce4055f04f874c5cfcbcf1b306a63d7552dd1f6c65a
 ```
-
-
 
 Get forged information on an account based on public key
 
 ```
-python helper.py --option forged --key b57878a79acb36be31171749ec361d16cc0c4a27d2d42f62d6cb0a5405223c69
+python helper.py --option forged --key 00520a82e7e37b882eddcce4055f04f874c5cfcbcf1b306a63d7552dd1f6c65a
 ```
-
-
 
 Register a delegate name (requires secret)
 
@@ -248,18 +273,20 @@ Register a delegate name (requires secret)
 python helper.py --option register_delegate --username slasheks_api
 ```
 
+---
+
 ## [Contacts](Contacts.md)
 
 Get the contacts of an account by publiKey
 
 ```
-python helper.py --option contacts --key a69ed828f28695a03558d5c29f96081d20d1ecc0e046e8622793ab2662629901
+python helper.py --option contacts --key 00520a82e7e37b882eddcce4055f04f874c5cfcbcf1b306a63d7552dd1f6c65a
 ```
 
 Get unconfirmed contacts based on publicKey
 
 ```
-python helper.py --option unconfirmed_contacts --key a6ed31b0dce156779b77f8e1c723af0ce04dbb74520979b76866da56ede4462f
+python helper.py --option unconfirmed_contacts --key 00520a82e7e37b882eddcce4055f04f874c5cfcbcf1b306a63d7552dd1f6c65a
 ```
 
 Contact request (requires secret)

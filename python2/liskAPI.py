@@ -215,7 +215,7 @@ class liskAPI(object):
         targets = {
                 # Get block by id.
                 # GET /api/blocks/get?id=id
-                'blockid' : '/api/blocks',
+                'blockid' : '/api/blocks/get?id=',
                 # Get all blocks.
                 # GET /api/blocks?generatorPublicKey=generatorPublicKey
                 # &height=height&previousBlock=previousBlock&totalAmount=totalAmount
@@ -237,7 +237,7 @@ class liskAPI(object):
 
         if rtype in get:
 
-            if rtype == 'blockid':
+            if rtype == 'blockid' or rtype == 'all_blocks':
 
                 url += payload['parameters']
 

@@ -8,7 +8,6 @@ import liskAPI
 import getpass
 
 
-
 def loader(api,args):
     # Loader - Complete
     print json.dumps(api.loader(args.option), indent=2)
@@ -27,16 +26,19 @@ def check2pass(api,args):
 def accountput(api,args,secret,secret2):
 
     payload = {}
+    payload['secret'] = secret
 
-    if args.option == 'open_account' and secret:
+    if secret2:
+        payload['secondSecret'] = secret2
 
-        payload['secret'] = secret
+    if args.option == 'open_account' or args.option == 'genpub' and secret:
+
+        print json.dumps(api.account(args.option,payload), indent=2)
 
     elif args.option == 'vote' and secret:
 
         hex_match = re.compile(r'^[A-Za-z0-9]{64}$')
         pubkey_list = []
-        payload['secret'] = secret
         vote_type = ''
 
         if args.vote_no == True and not args.vote_yes:
@@ -90,25 +92,10 @@ def accountput(api,args,secret,secret2):
                 print "Voter list contains more than 101 addresses"
                 exit(1)
 
-
-        if args.second_passphrase == True:
-            payload['secondSecret'] = secret2
-
-        payload = {
-                'secret' : secret,
-                #'publicKey' : '',
-                'delegates' : pubkey_list
-            }
-
-    elif args.option == 'genpub':
-
-        payload = { 'secret' : secret }
-
     else:
         print "Accounts Errors"
         exit(1)
 
-    print json.dumps(api.account(args.option,payload), indent=2)
 
 def peerget(api,args):
 
@@ -182,7 +169,7 @@ def usernameput(api,args,secret,secret2):
             'username' : args.username
         }
 
-    if args.second_passphrase:
+    if secret2:
 
         payload['secondSecret'] = secret2
 
@@ -202,7 +189,7 @@ def contactput(api,args,secret,secret2):
             'secret' : secret
         }
 
-    if args.second_passphrase == True:
+    if secret2:
 
         payload['secondSecret'] = secret2
 
@@ -288,6 +275,9 @@ def main():
 
         parser.print_help()
 
+    # Instanciate
+    api = liskAPI.liskAPI(args.url)
+
     if args.option == 'vote' and args.vote_file:
 
         if os.path.isfile(args.vote_file) == False and not args.vote_yes\
@@ -317,7 +307,10 @@ def main():
             print "Passprase does not match. Please try again"
             exit(1)
 
-        if args.second_passphrase or args.option in twopassphrase_options:
+        account_payload = { "secret" : secret }
+        account_info = api.account('open_account',account_payload)
+
+        if account_info['account']['secondSignature'] == 1:
 
             print "\nPlease enter your second passphrase:"
             secret2 = getpass.getpass()
@@ -329,9 +322,6 @@ def main():
                 print "Passprase does not match. Please try again"
                 exit(1)
 
-
-    # Instanciate
-    api = liskAPI.liskAPI(args.url)
 
     targets = {
             'get_lodr' : ['sync','status'],
