@@ -201,11 +201,11 @@ class liskAPI(object):
             }
 
 
-        url = self.target_url + targets[rtype]
+        url = '{}{}'.format(self.target_url,targets[rtype])
 
         if payload['parameters']:
 
-             url += payload['parameters']
+             url = '{}{}'.format(url,payload['parameters'])
 
         return self.get_check(url)
 
@@ -262,7 +262,6 @@ class liskAPI(object):
 
         }
 
-    
         request_method = {
                 'get' : ['get_signature'],
                 'put' : ['gen_2_sig']

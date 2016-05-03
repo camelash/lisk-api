@@ -16,8 +16,6 @@ python helper.py --option account --wallet 15797964559913448387L
 Please be very careful with the options that require secret. There is no turning back. 
 ```
 
----
-
 ## [Account](Account.md)
 
 Show information of an account based on entering your secret (Requires Secret)
@@ -85,8 +83,6 @@ Example File Layout:
 4fbda6b316fa930c3a93cd5b1d82d5fd107d11d95a238c64af472bb8269778b2
 ```
 
----
-
 ## [Loader](Loader.md)
 
 Get the status of a node by url
@@ -117,8 +113,6 @@ python helper.py --option sync --url http://localhost:7000
 python helper.py --option sync --url https://localhost:443
 ```
 
----
-
 ## [Peers](Peers.md)
 
 Get full peer list
@@ -144,8 +138,6 @@ Get peer information by IP (Not working)
 ```
 python helper.py -o peer_ip
 ```
-
----
 
 ## [Blocks](Blocks.md)
 
@@ -193,8 +185,6 @@ Get second signature of account
 
 ```
 
----
-
 ## [Transactions](Transactions.md)
 
 Get information of a block by block ID (supports full sorting options with the --parameters flag)
@@ -226,8 +216,6 @@ Get all unconfirmed transactions
 ```
 python helper.py -o unconfirmed_all
 ````
-
----
 
 ## [Delegates](Delegates.md)
 
@@ -272,8 +260,6 @@ Register a delegate name (requires secret)
 ```
 python helper.py --option register_delegate --username slasheks_api
 ```
-
----
 
 ## [Contacts](Contacts.md)
 
