@@ -38,6 +38,8 @@ def accountput(api,args,secret,secret2):
     elif args.option == 'vote' and secret:
 
         hex_match = re.compile(r'^[A-Za-z0-9]{64}$')
+        str_match = re.compile(r'^\S{1,20}$')
+        add_match = re.compile(r'^[0-9]{15,20}L$')
         pubkey_list = []
         vote_type = ''
 
@@ -59,16 +61,45 @@ def accountput(api,args,secret,secret2):
 
                 key_s = pkey.strip()
 
-                match = re.search(hex_match, key_s)
+                if not key_s: continue
 
-                if match:
+                if re.search(hex_match, key_s):
 
                     pubkey_list.append("{}{}".format(vote_type,key_s))
 
+                elif re.search(str_match, key_s) and not re.search(add_match, key_s):
+
+                    name_get = { 'parameters' : '/get?username={}'.format(key_s) }
+                    n_addr = api.delegates('delegate_list',name_get)
+
+                    try:
+                        name_del_pubkey = n_addr['delegate']['publicKey']
+                    except:
+                        print 'Delegate {} not found. Skipping'.format(key_s)
+                        continue
+
+                    pubkey_list.append('{}{}'.format(vote_type,name_del_pubkey))
+
+                elif re.search(add_match, key_s):
+
+                    addr_get = { 'address' : key_s }
+                    r_addr = api.account('account',addr_get)
+
+                    try:
+                        addr_del_pubkey = r_addr['account']['publicKey']
+                    except:
+                        print 'Address {} not found. Skipping'.format(key_s)
+                        continue
+
+                    if addr_del_pubkey == None: continue
+
+                    pubkey_list.append('{}{}'.format(vote_type,addr_del_pubkey))
+
                 else:
 
-                    print "Found a non matching line in the file. Quitting."
-                    exit(1)
+                    print "Found a non matching line in the file. Skipping:{}".\
+                        format(key_s)
+
 
             if len(pubkey_list) <= 101:
 

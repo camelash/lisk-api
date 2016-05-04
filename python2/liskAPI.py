@@ -48,7 +48,10 @@ class liskAPI(object):
 
         else:
 
-            error = {'errcode': r.status_code}
+            error = {
+                'errcode': r.status_code,
+                'error' : r
+                }
 
             return error
 
