@@ -28,7 +28,7 @@ def check2pass(api, args):
 
     pass
 
-def accountput(api, args, secret, secret2):
+def accountput(api, args, account_info, secret, secret2):
     '''Account modification options '''
 
     payload = {}
@@ -108,7 +108,6 @@ def accountput(api, args, secret, secret2):
                     print "Found a non matching line in the file. Skipping:{}".\
                         format(key_s)
 
-
             if len(pubkey_list) <= 101:
 
                 i = 0
@@ -117,11 +116,21 @@ def accountput(api, args, secret, secret2):
                     del pubkey_list[:33]
                     i += 1
 
-                    payload['delegates'] = lista
+                    if args.vote_yes:
+                        pubkey_list_clean = voterscheck(api, account_info, lista,
+                                                        vote_type)
+                        payload['delegates'] = pubkey_list_clean
+
+                    else:
+
+                        payload['delegates'] = lista
 
                     if len(lista) == 0:
+
                         exit(1)
+
                     else:
+
                         print json.dumps(api.account(args.option, payload), indent=2)
 
                 exit(1)
@@ -135,6 +144,28 @@ def accountput(api, args, secret, secret2):
         print "Accounts Errors"
         exit(1)
 
+def voterscheck(api, account_info, pubkey_list, vote_type):
+    ''' Check if account has voted for delegate'''
+
+    print "voterscheck"
+
+    account_wallet = str(account_info['account']['address'])
+    payload = {'address' : account_wallet}
+    voter_votes = api.delegates('votes_by_account', payload)
+
+    print json.dumps(voter_votes, indent=2)
+
+    for delegate in voter_votes['delegates']:
+
+        delegate_pkey = '{}{}'.format(vote_type, delegate['publicKey'])
+
+        if delegate_pkey in pubkey_list:
+
+            pubkey_list.remove(delegate_pkey)
+            print 'Already voted for {}. Removing from list'.format(\
+                delegate['username'])
+
+    return pubkey_list
 
 def peerget(api, args):
     '''get peer information'''
@@ -407,7 +438,7 @@ def main():
 
     elif args.option in targets['put_acct']:
 
-        accountput(api, args, secret, secret2)
+        accountput(api, args, account_info, secret, secret2)
 
     # Peers - TODO: peer_ip -- DONE: peer_list, peer_version
     elif args.option in targets['get_peer']:
