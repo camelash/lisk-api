@@ -1,29 +1,35 @@
 #!/usr/bin/env python
+'''
+Helper script for the LiskAPI python library
+'''
 
 import json
 import re
 import os.path
 import argparse
-import liskAPI
 import getpass
+import liskAPI
 
 
-def loader(api,args):
-    # Loader - Complete
+def loader(api, args):
+    '''Loader - sync and status of node'''
     print json.dumps(api.loader(args.option), indent=2)
 
-def accountget(api,args):
+def accountget(api, args):
+    '''get account information'''
     payload = {
         'address' : args.wallet
     }
 
-    print json.dumps(api.account(args.option,payload), indent=2)
+    print json.dumps(api.account(args.option, payload), indent=2)
 
-def check2pass(api,args):
+def check2pass(api, args):
+    '''Check if account has multi-phrase enabled '''
 
     pass
 
-def accountput(api,args,secret,secret2):
+def accountput(api, args, secret, secret2):
+    '''Account modification options '''
 
     payload = {}
     payload['secret'] = secret
@@ -33,7 +39,7 @@ def accountput(api,args,secret,secret2):
 
     if args.option == 'open_account' or args.option == 'genpub' and secret:
 
-        print json.dumps(api.account(args.option,payload), indent=2)
+        print json.dumps(api.account(args.option, payload), indent=2)
 
     elif args.option == 'vote' and secret:
 
@@ -43,11 +49,11 @@ def accountput(api,args,secret,secret2):
         pubkey_list = []
         vote_type = ''
 
-        if args.vote_no == True and not args.vote_yes:
+        if args.vote_no is True and not args.vote_yes:
 
             vote_type = '-'
 
-        elif args.vote_yes == True and not args.vote_no:
+        elif args.vote_yes is True and not args.vote_no:
 
             vote_type = '+'
         else:
@@ -61,16 +67,17 @@ def accountput(api,args,secret,secret2):
 
                 key_s = pkey.strip()
 
-                if not key_s: continue
+                if not key_s:
+                    continue
 
                 if re.search(hex_match, key_s):
 
-                    pubkey_list.append("{}{}".format(vote_type,key_s))
+                    pubkey_list.append("{}{}".format(vote_type, key_s))
 
                 elif re.search(str_match, key_s) and not re.search(add_match, key_s):
 
-                    name_get = { 'parameters' : '/get?username={}'.format(key_s) }
-                    n_addr = api.delegates('delegate_list',name_get)
+                    name_get = {'parameters' : '/get?username={}'.format(key_s)}
+                    n_addr = api.delegates('delegate_list', name_get)
 
                     try:
                         name_del_pubkey = n_addr['delegate']['publicKey']
@@ -78,12 +85,12 @@ def accountput(api,args,secret,secret2):
                         print 'Delegate {} not found. Skipping'.format(key_s)
                         continue
 
-                    pubkey_list.append('{}{}'.format(vote_type,name_del_pubkey))
+                    pubkey_list.append('{}{}'.format(vote_type, name_del_pubkey))
 
                 elif re.search(add_match, key_s):
 
-                    addr_get = { 'address' : key_s }
-                    r_addr = api.account('account',addr_get)
+                    addr_get = {'address' : key_s}
+                    r_addr = api.account('account', addr_get)
 
                     try:
                         addr_del_pubkey = r_addr['account']['publicKey']
@@ -91,9 +98,10 @@ def accountput(api,args,secret,secret2):
                         print 'Address {} not found. Skipping'.format(key_s)
                         continue
 
-                    if addr_del_pubkey == None: continue
+                    if addr_del_pubkey is None:
+                        continue
 
-                    pubkey_list.append('{}{}'.format(vote_type,addr_del_pubkey))
+                    pubkey_list.append('{}{}'.format(vote_type, addr_del_pubkey))
 
                 else:
 
@@ -114,7 +122,7 @@ def accountput(api,args,secret,secret2):
                     if len(lista) == 0:
                         exit(1)
                     else:
-                        print json.dumps(api.account(args.option,payload), indent=2)
+                        print json.dumps(api.account(args.option, payload), indent=2)
 
                 exit(1)
 
@@ -128,96 +136,106 @@ def accountput(api,args,secret,secret2):
         exit(1)
 
 
-def peerget(api,args):
+def peerget(api, args):
+    '''get peer information'''
 
     payload = {
-             "ip" : "127.0.0.1",
-             "port" : 7000,
-             "parameters" : args.q_params
+        "ip" : "127.0.0.1",
+        "port" : 7000,
+        "parameters" : args.q_params
         }
-    print json.dumps(api.peers(args.option,payload), indent=2)
+    print json.dumps(api.peers(args.option, payload), indent=2)
 
-def transactionsget(api,args):
+def transactionsget(api, args):
+    '''get transaction information'''
+
+    payload = {
+        'id':args.all_id,
+        'parameters' : args.q_params
+        }
+
+    print json.dumps(api.transactions(args.option, payload), indent=2)
+
+def transactionput(api, args, secret):
+    ''' transaction modification options'''
+
+    if args.option == 'send' and secret:
+
+        amount = args.amount * 10**8 # amount times ten to the power of eigth
 
         payload = {
-                'id':args.all_id,
-                 'parameters' : args.q_params
-            }
-
-        print json.dumps(api.transactions(args.option,payload), indent=2)
-
-def transactionput(api,args,secret):
-
-        if args.option == 'send' and secret:
-
-            amount = args.amount * 10**8 # amount times ten to the power of eigth
-
-            payload = {
-                'secret' : secret,
-                'recipientId' : args.dst_id,
-                'amount' : int(amount)
-                #'publicKey' : args.pubkey # needs pubkey to verify optional
-            }
-
-            print json.dumps(api.transactions(args.option,payload), indent=2)
-
-def blocksget(api,args):
-
-    payload = {'parameters' : args.q_params,
-            'pubkey' : args.pubkey,
+            'secret' : secret,
+            'recipientId' : args.dst_id,
+            'amount' : int(amount)
         }
 
-    print json.dumps(api.blocks(args.option,payload), indent=2)
+        print json.dumps(api.transactions(args.option, payload), indent=2)
 
-def delegatesget(api,args):
+def blocksget(api, args):
+    '''get block information'''
+
+    payload = {
+        'parameters' : args.q_params,
+        'pubkey' : args.pubkey,
+        }
+
+    print json.dumps(api.blocks(args.option, payload), indent=2)
+
+def delegatesget(api, args):
+    '''get delegate information'''
 
     payload = {
         'pubkey' : args.pubkey, #forged and delegate_voters
         'id' : args.all_id, #delegate_by_tx
         'address' : args.wallet,
         'parameters' : args.q_params
-            }
-    print json.dumps(api.delegates(args.option,payload), indent=2)
+        }
+    print json.dumps(api.delegates(args.option, payload), indent=2)
 
-def delegatespost(api,args,secret):
+def delegatespost(api, args, secret):
+    ''' delegate modification options'''
 
     #For forging
-    payload = { 'secret' : secret }
-    print json.dumps(api.delegates(args.option,payload), indent=2)
+    payload = {'secret' : secret}
+    print json.dumps(api.delegates(args.option, payload), indent=2)
 
-def delegatesput(api,args,secret):
+def delegatesput(api, args, secret):
+    ''' delegate modification options '''
 
     payload = {
-            'secret': secret,
-            'username' : args.username
+        'secret': secret,
+        'username' : args.username
         }
-    print json.dumps(api.delegates(args.option,payload), indent=2)
+    print json.dumps(api.delegates(args.option, payload), indent=2)
 
-def usernameput(api,args,secret,secret2):
+def usernameput(api, args, secret, secret2):
+    ''' username modification options'''
 
     payload = {
-            'secret': secret,
-            'username' : args.username
+        'secret': secret,
+        'username' : args.username
         }
 
     if secret2:
 
         payload['secondSecret'] = secret2
 
-    print json.dumps(api.usernames(args.option,payload), indent=2)
+    print json.dumps(api.usernames(args.option, payload), indent=2)
 
-def contactget(api,args):
+def contactget(api, args):
+    ''' get contact information '''
 
     payload = {
-            'pubkey' : args.pubkey
+        'pubkey' : args.pubkey
         }
 
-    print json.dumps(api.contacts(args.option,payload), indent=2)
+    print json.dumps(api.contacts(args.option, payload), indent=2)
 
-def contactput(api,args,secret,secret2):
+def contactput(api, args, secret, secret2):
+    ''' contact modification options '''
 
     payload = {
-            'secret' : secret
+        'secret' : secret
         }
 
     if secret2:
@@ -237,68 +255,71 @@ def contactput(api,args,secret,secret2):
         print 'Options Missmatch, Please choose a destination wallet or name'
         exit(1)
 
-    print json.dumps(api.contacts(args.option,payload), indent=2)
+    print json.dumps(api.contacts(args.option, payload), indent=2)
 
 
-def signatureput(api,args,secret,secret2):
+def signatureput(api, args, secret, secret2):
+    ''' signature modification options'''
 
     payload = {
         'secret' : secret,
         'secondSecret' : secret2
         }
 
-    print json.dumps(api.signatures(args.option,payload), indent=2)
+    print json.dumps(api.signatures(args.option, payload), indent=2)
 
 def main():
+    ''' main fuction logic '''
 
     parser = argparse.ArgumentParser(description='LISK API Interface')
-    parser.add_argument('-o','--option',dest='option',action='store',
-        required=True,help='Query option')
+    parser.add_argument('-o', '--option', dest='option', action='store',
+                        required=True, help='Query option')
 
-    parser.add_argument('-w','--wallet',dest='wallet',action='store',
-        help='Wallet')
+    parser.add_argument('-w', '--wallet', dest='wallet', action='store',
+                        help='Wallet')
 
-    parser.add_argument('-k','--key',dest='pubkey',action='store',
-        help='Public Key')
+    parser.add_argument('-k', '--key', dest='pubkey', action='store',
+                        help='Public Key')
 
-    parser.add_argument('-u','--url',dest='url',action='store',
-        default='http://localhost:7000',help='Url in format: http://localhost:7000')
+    parser.add_argument('-u', '--url', dest='url', action='store',
+                        default='http://localhost:7000',
+                        help='Url in format: http://localhost:7000')
 
-    parser.add_argument('-vf','--vote-file',dest='vote_file',action='store',
-        default='votelist.txt',help='Load Vote File')
+    parser.add_argument('-vf', '--vote-file', dest='vote_file', action='store',
+                        default='votelist.txt', help='Load Vote File')
 
-    parser.add_argument('-dstid','--destination-id',dest='dst_id',action='store',
-        help='Destination Id or address')
+    parser.add_argument('-dstid', '--destination-id', dest='dst_id', action='store',
+                        help='Destination Id or address')
 
-    parser.add_argument('-a','--amount',dest='amount',action='store',
-        type=float,help='amount to send')
+    parser.add_argument('-a', '--amount', dest='amount', action='store',
+                        type=float, help='amount to send')
 
-    parser.add_argument('--username',dest='username',action='store',
-        default='',help='Username/delegate name')
+    parser.add_argument('--username', dest='username', action='store',
+                        default='', help='Username/delegate name')
 
-    parser.add_argument('-s','--secret',dest='secret',action='store_true',
-        default=False,help='secret pass phrase')
+    parser.add_argument('-s', '--secret', dest='secret', action='store_true',
+                        default=False, help='secret pass phrase')
 
-    parser.add_argument('-2s','--second-secret',dest='second_passphrase',action='store_true',
-        default=False,help='secret pass phrase')
+    parser.add_argument('-2s', '--second-secret', dest='second_passphrase',
+                        action='store_true', default=False, help='secret pass phrase')
 
-    parser.add_argument('--vote-no',dest='vote_no',action='store_true',
-        default=False,help='secret pass phrase')
+    parser.add_argument('--vote-no', dest='vote_no', action='store_true',
+                        default=False, help='secret pass phrase')
 
-    parser.add_argument('--vote-yes',dest='vote_yes',action='store_true',
-        default=False,help='secret pass phrase')
+    parser.add_argument('--vote-yes', dest='vote_yes', action='store_true',
+                        default=False, help='secret pass phrase')
 
-    parser.add_argument('-p','--parameters',dest='q_params',action='store',
-        default='',help='query parameters')
+    parser.add_argument('-p', '--parameters', dest='q_params', action='store',
+                        default='', help='query parameters')
 
-    parser.add_argument('-id','--id',dest='all_id',action='store',
-        default='',help='tx id or block id')
+    parser.add_argument('-id', '--id', dest='all_id', action='store',
+                        default='', help='tx id or block id')
 
     args = parser.parse_args()
 
-    passphrase_options = ['enable_forging','disable_forging','send',
-        'genpub','open_account','vote','register_delegate',
-        'register_username','add_contact','gen_2_sig']
+    passphrase_options = ['enable_forging', 'disable_forging', 'send',
+                          'genpub', 'open_account', 'vote', 'register_delegate',
+                          'register_username', 'add_contact', 'gen_2_sig']
 
     twopassphrase_options = ['gen_2_sig']
 
@@ -311,7 +332,7 @@ def main():
 
     if args.option == 'vote' and args.vote_file:
 
-        if os.path.isfile(args.vote_file) == False and not args.vote_yes\
+        if os.path.isfile(args.vote_file) is False and not args.vote_yes\
                 and not args.vote_no:
 
             print "\nFile not found or key not defined\n\n\
@@ -326,7 +347,7 @@ def main():
     secret = ''
     secret2 = ''
 
-    if args.secret == True or args.option in passphrase_options:
+    if args.secret is True or args.option in passphrase_options:
 
         secret = getpass.getpass()
         print "Confirming the passphrase. Please type it again."
@@ -338,8 +359,8 @@ def main():
             print "Passprase does not match. Please try again"
             exit(1)
 
-        account_payload = { "secret" : secret }
-        account_info = api.account('open_account',account_payload)
+        account_payload = {"secret" : secret}
+        account_info = api.account('open_account', account_payload)
 
         if account_info['account']['secondSignature'] == 1:
 
@@ -355,87 +376,88 @@ def main():
 
 
     targets = {
-            'get_lodr' : ['sync','status'],
-            'get_acct' : ['balance','account','delegates_by_account','pubkey'],
-            'put_acct' : ['genpub','vote','open_account'],
-            'get_peer' : ['peer_ip','peer_list','peer_version'],
-            'get_txid' : ['blocktx','get_tx','unconfirmed','unconfirmed_all'],
-            'put_txid' : ['send'],
-            'put_delg' : ['register_delegate'],
-            'post_del' : ['disable_forging','enable_forging'],
-            'get_delg' : ['forged',"delegate_list","delegate_by_tx","votes_by_account","delegate_voters"],
-            'get_blk': ['my_blocks','blockid','all_blocks','fee','height'],
-            'put_usrn' : ['register_username'],
-            'get_cntc' : ['contacts','unconfirmed_contacts'],
-            'put_cntc' : ['add_contact'],
-            'put_sign' : ['gen_2_sig'],
-            'get_sign' : ['get_signature']
+        'get_lodr' : ['sync', 'status'],
+        'get_acct' : ['balance', 'account', 'delegates_by_account', 'pubkey'],
+        'put_acct' : ['genpub', 'vote', 'open_account'],
+        'get_peer' : ['peer_ip', 'peer_list', 'peer_version'],
+        'get_txid' : ['blocktx', 'get_tx', 'unconfirmed', 'unconfirmed_all'],
+        'put_txid' : ['send'],
+        'put_delg' : ['register_delegate'],
+        'post_del' : ['disable_forging', 'enable_forging'],
+        'get_delg' : ['forged', "delegate_list", "delegate_by_tx",
+                      "votes_by_account", "delegate_voters"],
+        'get_blk': ['my_blocks', 'blockid', 'all_blocks', 'fee', 'height'],
+        'put_usrn' : ['register_username'],
+        'get_cntc' : ['contacts', 'unconfirmed_contacts'],
+        'put_cntc' : ['add_contact'],
+        'put_sign' : ['gen_2_sig'],
+        'get_sign' : ['get_signature']
         }
 
 
     # Main selector
     if args.option in targets['get_lodr']:
 
-        loader(api,args)
+        loader(api, args)
 
     # Accounts - balance and account works
     elif args.option in targets['get_acct']:
 
-        accountget(api,args)
+        accountget(api, args)
 
     elif args.option in targets['put_acct']:
 
-        accountput(api,args,secret,secret2)
+        accountput(api, args, secret, secret2)
 
     # Peers - TODO: peer_ip -- DONE: peer_list, peer_version
     elif args.option in targets['get_peer']:
 
-        peerget(api,args)
+        peerget(api, args)
 
     # Transactions
     elif args.option in targets['get_txid']:
 
-        transactionsget(api,args)
+        transactionsget(api, args)
 
     elif args.option in targets['put_txid']:
 
-        transactionput(api,args,secret)
+        transactionput(api, args, secret)
 
     # Blocks
     elif args.option in targets['get_blk']:
 
-        blocksget(api,args)
+        blocksget(api, args)
 
     #Delegates
     elif args.option in targets['get_delg']:
 
-        delegatesget(api,args)
+        delegatesget(api, args)
 
     elif args.option in targets['post_del']:
 
-        delegatespost(api,args,secret)
+        delegatespost(api, args, secret)
 
     elif args.option in targets['put_delg']:
 
-        delegatesput(api,args,secret)
+        delegatesput(api, args, secret)
 
     # Usernames
     elif args.option in targets['put_usrn']:
 
-        usernameput(api,args,secret,secret2)
+        usernameput(api, args, secret, secret2)
 
     # Contacts
     elif args.option in targets['get_cntc']:
 
-        contactget(api,args)
+        contactget(api, args)
 
     elif args.option in targets['put_cntc']:
 
-        contactput(api,args,secret,secret2)
+        contactput(api, args, secret, secret2)
 
     elif args.option in targets['put_sign']:
 
-        signatureput(api,args,secret,secret2)
+        signatureput(api, args, secret, secret2)
 
     # Hybrid call, my voters
     elif args.option == 'my_voters':
