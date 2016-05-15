@@ -147,13 +147,9 @@ def accountput(api, args, account_info, secret, secret2):
 def voterscheck(api, account_info, pubkey_list, vote_type):
     ''' Check if account has voted for delegate'''
 
-    print "voterscheck"
-
     account_wallet = str(account_info['account']['address'])
     payload = {'address' : account_wallet}
     voter_votes = api.delegates('votes_by_account', payload)
-
-    print json.dumps(voter_votes, indent=2)
 
     for delegate in voter_votes['delegates']:
 
