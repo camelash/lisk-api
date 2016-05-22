@@ -43,6 +43,15 @@ def accountput(api, args, account_info, secret, secret2):
 
     if args.option == 'genpub' and secret:
 
+        pseudobip = re.compile(r'^((\S{3,10})\s?){12,20}')
+
+        if not re.search(pseudobip, secret) or len(secret) > 100:
+
+            print """
+                Secret must me Twelve words or mode and
+                less than 100 characters"""
+            exit(1)
+
         response = api.account(args.option, payload)
 
         key_s = response['publicKey']
@@ -299,6 +308,15 @@ def contactput(api, args, secret, secret2):
 
 def signatureput(api, args, secret, secret2):
     ''' signature modification options'''
+
+    pseudobip = re.compile(r'^((\S{3,10})\s?){12,20}')
+
+    if not re.search(pseudobip, secret) or len(secret) > 100:
+
+        print """
+            Secret must me Twelve words or mode and
+            less than 100 characters"""
+        exit(1)
 
     payload = {
         'secret' : secret,
