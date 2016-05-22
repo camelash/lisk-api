@@ -37,9 +37,21 @@ def accountput(api, args, account_info, secret, secret2):
     if secret2:
         payload['secondSecret'] = secret2
 
-    if args.option == 'open_account' or args.option == 'genpub' and secret:
+    if args.option == 'open_account' and secret:
 
         print json.dumps(api.account(args.option, payload), indent=2)
+
+    if args.option == 'genpub' and secret:
+
+        response = api.account(args.option, payload)
+
+        key_s = response['publicKey']
+
+        n_addr = api.account('open_account', payload)
+
+        response['address'] = n_addr['account']['address']
+
+        print json.dumps(response, indent=2)
 
     elif args.option == 'vote' and secret:
 
