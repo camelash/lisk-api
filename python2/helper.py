@@ -339,8 +339,8 @@ def main():
                         help='Public Key')
 
     parser.add_argument('-u', '--url', dest='url', action='store',
-                        default='http://localhost:7000',
-                        help='Url in format: http://localhost:7000')
+                        default='http://localhost:8000',
+                        help='Url in format: http://localhost:8000')
 
     parser.add_argument('-vf', '--vote-file', dest='vote_file', action='store',
                         default='votelist.txt', help='Load Vote File')
@@ -478,7 +478,8 @@ def main():
 
     elif args.option in targets['put_txid']:
 
-        transactionput(api, args, secret)
+        #transactionput(api, args, secret)
+        pass
 
     # Blocks
     elif args.option in targets['get_blk']:
