@@ -204,7 +204,7 @@ def transactionsget(api, args):
 
     print json.dumps(api.transactions(args.option, payload), indent=2)
 
-def transactionput(api, args, secret):
+def transactionput(api, args, secret, secret2):
     ''' transaction modification options'''
 
     if args.option == 'send' and secret:
@@ -216,6 +216,10 @@ def transactionput(api, args, secret):
             'recipientId' : args.dst_id,
             'amount' : int(amount)
         }
+
+        if secret2:
+
+            payload['secondSecret'] = secret2
 
         print json.dumps(api.transactions(args.option, payload), indent=2)
 
@@ -378,7 +382,7 @@ def main():
                           'genpub', 'open_account', 'vote', 'register_delegate',
                           'register_username', 'add_contact', 'gen_2_sig']
 
-    twopassphrase_options = ['gen_2_sig']
+    twopassphrase_options = ['gen_2_sig', 'open_account']
 
     if not args.option:
 
@@ -419,7 +423,8 @@ def main():
         account_payload = {"secret" : secret}
         account_info = api.account('open_account', account_payload)
 
-        if account_info['account']['secondSignature'] == 1:
+        if account_info['account']['secondSignature'] == 1 and \
+                args.option in twopassphrase_options:
 
             print "\nPlease enter your second passphrase:"
             secret2 = getpass.getpass()
@@ -478,8 +483,7 @@ def main():
 
     elif args.option in targets['put_txid']:
 
-        #transactionput(api, args, secret)
-        pass
+        transactionput(api, args, secret, secret2)
 
     # Blocks
     elif args.option in targets['get_blk']:
