@@ -209,12 +209,22 @@ def transactionput(api, args, secret, secret2):
 
     if args.option == 'send' and secret:
 
+        amountstr = str(args.amount)
+
+        strsplit = amountstr.split('.')
+
+        if len(strsplit[1]) > 8:
+
+            print "Invalid decimal places. Ex: 1.12345678"
+
+            exit(1)
+
         amount = args.amount * 10**8 # amount times ten to the power of eigth
 
         payload = {
             'secret' : secret,
             'recipientId' : args.dst_id,
-            'amount' : int(amount)
+            'amount' : amount
         }
 
         if secret2:
@@ -382,7 +392,7 @@ def main():
                           'genpub', 'open_account', 'vote', 'register_delegate',
                           'register_username', 'add_contact', 'gen_2_sig']
 
-    twopassphrase_options = ['gen_2_sig', 'open_account']
+    twopassphrase_options = ['gen_2_sig', 'open_account', 'send']
 
     if not args.option:
 
