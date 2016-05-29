@@ -5,6 +5,7 @@ Helper script for the LiskAPI python library
 
 import json
 import re
+import math
 import os.path
 import argparse
 import getpass
@@ -219,12 +220,12 @@ def transactionput(api, args, secret, secret2):
 
             exit(1)
 
-        amount = args.amount * 10**8 # amount times ten to the power of eigth
+        amount = args.amount * math.pow(10, 8) # amount times ten to the power of eigth
 
         payload = {
             'secret' : secret,
             'recipientId' : args.dst_id,
-            'amount' : amount
+            'amount' : int(math.ceil(amount))
         }
 
         if secret2:
