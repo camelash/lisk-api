@@ -17,7 +17,7 @@ import liskAPI
 
 parser = argparse.ArgumentParser(description='Yeah')
 parser.add_argument('-f', '--file', dest='infile', action='store',
-                    required=True,help='Input File')
+                    help='Input File')
 parser.add_argument('-lf','--log-file',dest='logfile',action='store',
                     required=True,default='',help='Logging')
 args = parser.parse_args()
