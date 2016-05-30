@@ -66,7 +66,8 @@ try:
             # [0] address # [1] amount # [3] txid
     
             address = row[0]
-            amount = row[1]
+            amount = float(row[1])
+            print amount
     
             # Send the transaction
             amountstr = str(amount)
