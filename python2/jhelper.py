@@ -19,7 +19,7 @@ parser = argparse.ArgumentParser(description='Yeah')
 parser.add_argument('-f', '--file', dest='infile', action='store',
                     help='Input File')
 parser.add_argument('-lf','--log-file',dest='logfile',action='store',
-                    required=True,default='',help='Logging')
+                    default='',help='Logging')
 args = parser.parse_args()
 
 logger = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ logging.basicConfig(level=LEVELS['info'],
                     filename=args.logfile,
                     datefmt='%m/%d/%Y %I:%M:%S %p')
 
-if not args.infile:
+if not args.infile or not args.logfile:
 
     print "No file defined"
     print "Run like So: ./jhelper.py -f infile.csv -lf output.log"
