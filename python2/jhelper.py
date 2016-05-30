@@ -10,14 +10,23 @@ import csv
 import logging
 import getpass
 import liskAPI
+import datetime
+
 
 # Read in csv | address | amount | 
 # Feed that to sender
 # wait 10s then confirm on two different nodes
 
 parser = argparse.ArgumentParser(description='Yeah')
+parser.add_argument('-s1', '--site1', dest='site1', action='store',
+                    default='https://lisknode.io',help='Site1')
+
+parser.add_argument('-s2', '--site2', dest='site2', action='store',
+                    default='https://lisk-login.vipertkd.com',help='Site2')
+
 parser.add_argument('-f', '--file', dest='infile', action='store',
                     help='Input File')
+
 parser.add_argument('-lf','--log-file',dest='logfile',action='store',
                     default='',help='Logging')
 args = parser.parse_args()
@@ -34,7 +43,13 @@ logging.basicConfig(level=LEVELS['info'],
 if not args.infile or not args.logfile:
 
     print "No file defined"
-    print "Run like So: ./jhelper.py -f infile.csv -lf output.log"
+    print ""
+    print "Run like So:"
+    print "./jhelper.py -f infile.csv -lf output.log"
+    print "Optional:"
+    print "-s1 https://lisknode.io"
+    print "-s2 https://lisk-login.vipertkd.com"
+    print ""
     print "Infile should have the following format"
     print "address,amount"
     sys.exit(1)
@@ -61,8 +76,8 @@ if int(account['account']['balance']) < 1:
     sys.exit(1)
 
 sender = liskAPI.liskAPI('http://127.0.0.1:8000')
-verify1 = liskAPI.liskAPI('https://06.lskwallet.space')
-verify2 = liskAPI.liskAPI('https://lisknode.io')
+verify1 = liskAPI.liskAPI(args.site1)
+verify2 = liskAPI.liskAPI(args.site2)
 
 try:
 
@@ -77,10 +92,8 @@ try:
             # [0] address # [1] amount # [3] txid
     
             address = row[0]
-            amount = float(row[1])
-            print amount
+            amount = row[1]
     
-            # Send the transaction
             amountstr = str(amount)
     
             strsplit = amountstr.split('.')
@@ -91,9 +104,8 @@ try:
     
                 exit(1)
     
-            monies = float(amount)
-            amnt = monies * math.pow(10, 8) # amount times ten to the power of eigth
-    
+            amnt = float(amount) * math.pow(10, 8) # amount times ten to the power of eigth
+
             sendpayload = {
                 'secret' : passphrase,
                 'recipientId' : address,
@@ -103,13 +115,15 @@ try:
             try:
 
                 response = sender.transactions('send', sendpayload)
+                now = datetime.datetime.now()
+                row.insert(0, now.strftime("%Y-%m-%d-%H:%M"))
 
             except Exception as e:
 
                 print "Error {}".format(e)
                 sys.exit(1)
     
-            if response['success'] == 'False':
+            if response['success'] == False:
 
                 print response
                 logging.info(response)
@@ -117,10 +131,9 @@ try:
                 
 
             logging.info(response)
+
             tx = response['transactionId']
 
-            logging.info(response)
-    
             payload = {
                 'id': tx,
                 'parameters' : ''
@@ -157,6 +170,12 @@ try:
                         and (confirmation2['success'] or confirmation2u['success']):
     
                         print "Confirmed transaction {} is on login4/6".format(tx)
+
+                        ss = 'success'
+                        row.append(ss)
+                        logging.info(row)
+                        jcsvw.writerow(row)
+
                         break
     
                     else:
@@ -164,18 +183,6 @@ try:
                         continue
     
 
-                if confirmation1['success'] and confirmation2['success']:
-    
-                    ss = 'success'
-                    row.append(ss)
-                    jcsvw.writerow(row)
-    
-                else:
-    
-                    ss = 'failure'
-                    row.append(ss)
-                    jcsvw.writerow(row)
-    
             else:
     
                 print "Transaction Failure"
