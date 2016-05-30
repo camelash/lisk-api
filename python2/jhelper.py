@@ -49,9 +49,20 @@ except KeyboardInterrupt:
     print "\nAborting..."
     sys.exit(1)
 
+
+payl = {'secret':passphrase}
+api = liskAPI.liskAPI('http://127.0.0.1:8000')
+
+account = api.account('open_account', payl)
+
+if int(account['account']['balance']) < 1:
+
+    print "No lisk in that account"
+    sys.exit(1)
+
 sender = liskAPI.liskAPI('http://127.0.0.1:8000')
-verify1 = liskAPI.liskAPI('https://login04.lisk.io')
-verify2 = liskAPI.liskAPI('https://login06.lisk.io')
+verify1 = liskAPI.liskAPI('https://06.lskwallet.space')
+verify2 = liskAPI.liskAPI('https://lisknode.io')
 
 try:
 
