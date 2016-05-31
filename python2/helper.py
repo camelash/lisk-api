@@ -393,7 +393,7 @@ def main():
                           'genpub', 'open_account', 'vote', 'register_delegate',
                           'register_username', 'add_contact', 'gen_2_sig']
 
-    twopassphrase_options = ['gen_2_sig', 'open_account', 'send']
+    twopassphrase_options = ['vote', 'gen_2_sig', 'open_account', 'send']
 
     if not args.option:
 
