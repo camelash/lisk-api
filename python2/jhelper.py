@@ -18,11 +18,7 @@ import datetime
 # Feed that to sender
 # wait 10s then confirm on two different nodes
 
-
-def handler(signum, frame):
-    pass
-
-signal.signal(signal.SIGTSTP, handler)
+signal.signal(signal.SIGTSTP, signal.SIG_IGN)
 
 parser = argparse.ArgumentParser(description='Yeah')
 parser.add_argument('-s1', '--site1', dest='site1', action='store',
