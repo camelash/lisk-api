@@ -7,6 +7,7 @@ import math
 import argparse
 import time
 import csv
+import signal
 import logging
 import getpass
 import liskAPI
@@ -16,6 +17,12 @@ import datetime
 # Read in csv | address | amount | 
 # Feed that to sender
 # wait 10s then confirm on two different nodes
+
+
+def handler(signum, frame):
+    pass
+
+signal.signal(signal.SIGTSTP, handler)
 
 parser = argparse.ArgumentParser(description='Yeah')
 parser.add_argument('-s1', '--site1', dest='site1', action='store',
@@ -39,6 +46,9 @@ logging.basicConfig(level=LEVELS['info'],
                     format='%(asctime)s %(funcName)s %(message)s ',
                     filename=args.logfile,
                     datefmt='%m/%d/%Y %I:%M:%S %p')
+
+#logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 if not args.infile or not args.logfile:
 
@@ -81,10 +91,9 @@ verify2 = liskAPI.liskAPI(args.site2)
 
 try:
 
-    with open(args.infile) as jfhi, open('successout.csv', 'a') as jfho:
+    with open(args.infile) as jfhi:
     
         jcsvr = csv.reader(jfhi)
-        jcsvw = csv.writer(jfho)
     
         # Loop through the csv file and send transactions
         for row in jcsvr:
@@ -169,12 +178,16 @@ try:
                     if (confirmation1['success'] or confirmation1u['success'])\
                         and (confirmation2['success'] or confirmation2u['success']):
     
-                        print "Confirmed transaction {} is on login4/6".format(tx)
+                        print "Confirmed transaction {} is on 2 remote nodes".format(tx)
 
-                        ss = 'success'
-                        row.append(ss)
-                        logging.info(row)
-                        jcsvw.writerow(row)
+                        with open('successout.csv', 'a') as jfho:
+
+                            jcsvw = csv.writer(jfho)
+
+                            ss = 'success'
+                            row.append(ss)
+                            logging.info(row)
+                            jcsvw.writerow(row)
 
                         break
     
