@@ -5,6 +5,7 @@ Helper script for the LiskAPI python library
 
 import json
 import re
+import sys
 import math
 import os.path
 import argparse
@@ -535,7 +536,32 @@ def main():
     # Hybrid call, my voters
     elif args.option == 'my_voters':
 
-        print json.dumps(api.my_voters(args.wallet), indent=2)
+        if not args.wallet:
+
+            print "No wallet address specified"
+            sys.exit(1)
+
+        else:
+
+            #print json.dumps(api.my_voters(args.wallet), indent=2)
+            voters = api.my_voters(args.wallet)
+
+            print "{} {} {}".format("Address", "Name", "Balance")
+            total_balance = 0
+
+            for voter in voters['accounts']:
+
+                bal = int(voter['balance']) / 1000000
+                total_balance += bal
+
+                print "{:25} {:20} {}".format(voter['address'],
+                                              voter['username'],
+                                              bal)
+
+            print "\nTotal Balance: {} Total Addresses: {}".\
+                format(total_balance,len(voters['accounts']))
+
+
 
 if __name__ in '__main__':
 

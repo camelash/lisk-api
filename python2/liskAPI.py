@@ -443,25 +443,18 @@ class liskAPI(object):
     def my_voters(self,wallet):
 
         ## Get my voters
-        payload = { 'address' : wallet }
-        results = {}
+        account_payload = { 'address' : wallet }
+        voters_payload = {}
 
         ## Get the public key
-        pkey = self.account('pubkey',payload)
+        pkey = self.account('pubkey',account_payload)
 
-        payload['pubkey'] = pkey['publicKey']
+        voters_payload['pubkey'] = pkey['publicKey']
 
         ## Get your voters
-        voters = self.delegates('delegate_voters',payload)
+        voters = self.delegates('delegate_voters',voters_payload)
 
-        for voter in voters['accounts']:
-            payload['address'] = voter['address']
-
-            voter_account = self.account('account',payload)
-
-            results.setdefault('voters', []).append(voter_account)
-
-        return results
+        return voters
 
 
 
