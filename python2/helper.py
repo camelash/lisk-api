@@ -551,7 +551,7 @@ def main():
 
             for voter in voters['accounts']:
 
-                bal = int(voter['balance']) / 1000000
+                bal = int(voter['balance']) / 100000000
                 total_balance += bal
 
                 print "{:25} {:20} {}".format(voter['address'],
