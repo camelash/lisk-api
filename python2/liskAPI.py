@@ -427,8 +427,47 @@ class liskAPI(object):
     def dapps(self):
         pass
 
-    def multisg(self):
-        pass
+    def multisig(self,rtype,payload):
+
+        targets = {
+            # Return multisig transaction that waiting for your signature.
+            # GET /api/multisignatures/pending?publicKey=publicKey
+            'my_multisig' : '/api/multisignatures/pending?publicKey=',
+            # Get accounts of multisignature.
+            # GET /api/multisignatures/accounts?publicKey=publicKey
+            'multisig_accounts' : '/api/multisignatures/accounts?publicKey=',
+            # Sign transaction that wait for your signature.
+            # POST /api/multisignatures/sign
+            'sign_tx' : '/api/multisignatures/sign',
+            # Create a multisignature account.
+            # PUT /api/multisignatures
+            'create_multisig' : ' /api/multisignatures',
+        }
+
+        request_method = {
+            'get' : ['my_multisig','multisig_accounts'],
+            'put' : ['create_multisig'],
+            'post' : ['sign_tx'],
+        }
+
+        if rtype in request_method['get']:
+
+            url = '{}{}{}'.format(self.target_url, targets[rtype],
+                                  payload['pubkey'])
+
+            return self.get_check(url)
+
+        elif rtype in request_method['put']:
+
+            url = '{}{}'.format(self.target_url,targets[rtype])
+
+            #return self.put_check(url,payload,self.headers)
+
+        elif rtype in request_method['put']:
+
+            url = '{}{}'.format(self.target_url,targets[rtype])
+
+            #return self.put_check(url,payload,self.headers)
 
     # Custom Wrappers
 

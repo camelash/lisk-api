@@ -341,6 +341,15 @@ def signatureput(api, args, secret, secret2):
 
     print json.dumps(api.signatures(args.option, payload), indent=2)
 
+def multisigget(api, args):
+    ''' get multisignature information '''
+
+    payload = {
+        'pubkey' : args.pubkey
+        }
+
+    print json.dumps(api.contacts(args.option, payload), indent=2)
+
 def main():
     ''' main fuction logic '''
 
@@ -465,7 +474,8 @@ def main():
         'get_cntc' : ['contacts', 'unconfirmed_contacts'],
         'put_cntc' : ['add_contact'],
         'put_sign' : ['gen_2_sig'],
-        'get_sign' : ['get_signature']
+        'get_sign' : ['get_signature'],
+        'get_mlts' : ['my_multisig','multisig_account']
         }
 
 
@@ -532,6 +542,10 @@ def main():
     elif args.option in targets['put_sign']:
 
         signatureput(api, args, secret, secret2)
+
+    elif args.option in targets['get_mlts']:
+
+        multisigget(api, args)
 
     # Hybrid call, my voters
     elif args.option == 'my_voters':
