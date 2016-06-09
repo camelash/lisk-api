@@ -348,7 +348,7 @@ def multisigget(api, args):
         'pubkey' : args.pubkey
         }
 
-    print json.dumps(api.contacts(args.option, payload), indent=2)
+    print json.dumps(api.multisig(args.option, payload), indent=2)
 
 def main():
     ''' main fuction logic '''
