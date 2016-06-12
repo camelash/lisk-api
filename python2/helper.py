@@ -350,6 +350,28 @@ def multisigget(api, args):
 
     print json.dumps(api.multisig(args.option, payload), indent=2)
 
+def multisigput(api, args, secret):
+    ''' multisignature creation option'''
+
+    payload = {
+        'secret' : secret,
+        'lifetime' : 'string of lifetime 1-24 hours',
+        'min' : 1-15, # min sig approve tx
+        'keysgroup' : [+pubkey] # array of pub strings
+    }
+
+    print json.dumps(api.multisig(args.option, payload), indent=2)
+
+def multisigppost(api, args, secret):
+    ''' multisignature creation option'''
+
+    payload = {
+        'secret' : secret,
+        'transactionID' : args.tx
+    }
+
+    print json.dumps(api.multisig(args.option, payload), indent=2)
+
 def main():
     ''' main fuction logic '''
 
@@ -367,9 +389,6 @@ def main():
                         default='http://localhost:8000',
                         help='Url in format: http://localhost:8000')
 
-    parser.add_argument('-vf', '--vote-file', dest='vote_file', action='store',
-                        default='votelist.txt', help='Load Vote File')
-
     parser.add_argument('-dstid', '--destination-id', dest='dst_id', action='store',
                         help='Destination Id or address')
 
@@ -382,20 +401,31 @@ def main():
     parser.add_argument('-s', '--secret', dest='secret', action='store_true',
                         default=False, help='secret pass phrase')
 
-    parser.add_argument('-2s', '--second-secret', dest='second_passphrase',
-                        action='store_true', default=False, help='secret pass phrase')
+    parser.add_argument('-p', '--parameters', dest='q_params', action='store',
+                        default='', help='query parameters')
 
+    parser.add_argument('-id', '--id', dest='all_id', action='store',
+                        default='', help='tx id or block id')
+
+    # Multisig options
+    parser.add_argument('-lf', '--lifetime', dest='lifetime',
+                        action='store', help='lifetime of multisig')
+
+    parser.add_argument('-m', '--minimum', dest='min',
+                        action='store', help='minimum amount of signatures')
+
+    parser.add_argument('-mf', '--multisig-file', dest='mfile', action='store',
+                        default='multisig.txt', help='Load Multisig File')
+
+    # Vote options
     parser.add_argument('--vote-no', dest='vote_no', action='store_true',
                         default=False, help='secret pass phrase')
 
     parser.add_argument('--vote-yes', dest='vote_yes', action='store_true',
                         default=False, help='secret pass phrase')
 
-    parser.add_argument('-p', '--parameters', dest='q_params', action='store',
-                        default='', help='query parameters')
-
-    parser.add_argument('-id', '--id', dest='all_id', action='store',
-                        default='', help='tx id or block id')
+    parser.add_argument('-vf', '--vote-file', dest='vote_file', action='store',
+                        default='votelist.txt', help='Load Vote File')
 
     args = parser.parse_args()
 
@@ -475,7 +505,7 @@ def main():
         'put_cntc' : ['add_contact'],
         'put_sign' : ['gen_2_sig'],
         'get_sign' : ['get_signature'],
-        'get_mlts' : ['my_multisig','multisig_account']
+        'get_mlts' : ['my_multisig','multisig_accounts']
         }
 
 
