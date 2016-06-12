@@ -495,5 +495,16 @@ class liskAPI(object):
 
         return voters
 
+    def forge_check(self,delegate):
+        ''' check forging status '''
 
+        # First grab public key from delegate name
+        payload = {'parameters':'/get?username={}'.format(delegate)}
+        delegate_info = self.delegates('delegate_list',payload)
 
+        pubkey = delegate_info['delegate']['publicKey']
+
+        response = requests.get('{}/api/delegates/forging/status?publicKey={}'\
+                                .format(self.target_url, pubkey))
+
+        return json.loads(response.text)

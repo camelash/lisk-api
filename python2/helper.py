@@ -17,6 +17,10 @@ def loader(api, args):
     '''Loader - sync and status of node'''
     print json.dumps(api.loader(args.option), indent=2)
 
+def forge_check(api, args):
+    '''Check forging status'''
+    print json.dumps(api.forge_check(args.username), indent=2)
+
 def accountget(api, args):
     '''get account information'''
     payload = {
@@ -475,6 +479,7 @@ def main():
         'put_cntc' : ['add_contact'],
         'put_sign' : ['gen_2_sig'],
         'get_sign' : ['get_signature'],
+        'get_delc' : ['forge_check'],
         'get_mlts' : ['my_multisig','multisig_account']
         }
 
@@ -574,6 +579,10 @@ def main():
 
             print "\nTotal Balance: {} Total Addresses: {}".\
                 format(total_balance,len(voters['accounts']))
+
+    elif args.option in targets['get_delc']:
+
+        forge_check(api, args)
 
 
 
