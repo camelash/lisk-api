@@ -21,6 +21,10 @@ def forge_check(api, args):
     '''Check forging status'''
     print json.dumps(api.forge_check(args.username), indent=2)
 
+def autoname(api, args):
+    '''Get delegate info by delegate name'''
+    print json.dumps(api.autoname(args.username), indent=2)
+
 def accountget(api, args):
     '''get account information'''
     payload = {
@@ -583,6 +587,10 @@ def main():
     elif args.option in targets['get_delc']:
 
         forge_check(api, args)
+
+    elif args.option == 'autoname':
+
+        autoname(api, args)
 
 
 

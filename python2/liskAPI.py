@@ -475,9 +475,13 @@ class liskAPI(object):
         # Combine account generation and username generation. 
         pass
 
-    def autoname(self):
-        # Give a username get account information
-        pass
+    def autoname(self, delegate):
+        '''Give a username get account information'''
+
+        payload = {'parameters':'/get?username={}'.format(delegate)}
+        delegate_info = self.delegates('delegate_list',payload)
+
+        return delegate_info
 
     def my_voters(self,wallet):
 
