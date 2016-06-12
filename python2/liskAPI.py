@@ -475,9 +475,13 @@ class liskAPI(object):
         # Combine account generation and username generation. 
         pass
 
-    def autoname(self):
-        # Give a username get account information
-        pass
+    def autoname(self, delegate):
+        '''Give a username get account information'''
+
+        payload = {'parameters':'/get?username={}'.format(delegate)}
+        delegate_info = self.delegates('delegate_list',payload)
+
+        return delegate_info
 
     def my_voters(self,wallet):
 
@@ -495,5 +499,16 @@ class liskAPI(object):
 
         return voters
 
+    def forge_check(self,delegate):
+        ''' check forging status '''
 
+        # First grab public key from delegate name
+        payload = {'parameters':'/get?username={}'.format(delegate)}
+        delegate_info = self.delegates('delegate_list',payload)
 
+        pubkey = delegate_info['delegate']['publicKey']
+
+        response = requests.get('{}/api/delegates/forging/status?publicKey={}'\
+                                .format(self.target_url, pubkey))
+
+        return json.loads(response.text)
