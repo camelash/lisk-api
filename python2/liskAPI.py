@@ -55,6 +55,24 @@ class liskAPI(object):
 
             return error
 
+    @staticmethod
+    def post_check(url,payload,headers):
+
+        r = requests.post(url, data=json.dumps(payload),
+            headers=headers)
+
+        if r.status_code == 200:
+
+            return json.loads(r.text)
+
+        else:
+
+            error = {
+                'errcode': r.status_code,
+                'error' : r
+                }
+
+            return error
 
     def account(self,rtype,payload={}):
 
@@ -463,11 +481,11 @@ class liskAPI(object):
 
             return self.put_check(url,payload,self.headers)
 
-        elif rtype in request_method['put']:
+        elif rtype in request_method['post']:
 
             url = '{}{}'.format(self.target_url,targets[rtype])
 
-            #return self.put_check(url,payload,self.headers)
+            return self.post_check(url,payload,self.headers)
 
     # Custom Wrappers
 

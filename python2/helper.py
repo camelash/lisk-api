@@ -390,6 +390,20 @@ def multisigput(api, args, secret, secret2):
 
     print json.dumps(api.multisig(args.option, payload), indent=2)
 
+def multisigpost(api, args, secret, secret2):
+    ''' post multisignature information '''
+
+    payload = {
+        'secret' : secret,
+        'transactionId' : args.all_id
+        }
+
+    if secret2:
+
+        payload['secondSecret'] = secret2
+
+    print json.dumps(api.multisig(args.option, payload), indent=2)
+
 def main():
     ''' main fuction logic '''
 
@@ -452,10 +466,10 @@ def main():
     passphrase_options = ['enable_forging', 'disable_forging', 'send',
                           'genpub', 'open_account', 'vote', 'register_delegate',
                           'register_username', 'add_contact', 'gen_2_sig',
-                          'create_multisig']
+                          'create_multisig','sign_tx']
 
     twopassphrase_options = ['vote', 'gen_2_sig', 'open_account', 'send',
-                             'create_multisig']
+                             'create_multisig','sign_tx']
 
     if not args.option:
 
@@ -529,6 +543,7 @@ def main():
         'get_sign' : ['get_signature'],
         'get_delc' : ['forge_check'],
         'get_mlts' : ['my_multisig','multisig_account'],
+        'post_mlts' : ['sign_tx'],
         'put_mlts' : ['create_multisig']
         }
 
@@ -604,6 +619,10 @@ def main():
     elif args.option in targets['put_mlts']:
 
         multisigput(api, args, secret, secret2)
+
+    elif args.option in targets['post_mlts']:
+
+        multisigpost(api, args, secret, secret2)
 
     # Hybrid call, my voters
     elif args.option == 'my_voters':

@@ -272,11 +272,31 @@ python helper.py --option contacts --key 00520a82e7e37b882eddcce4055f04f874c5cfc
 Get unconfirmed contacts based on publicKey
 
 ```
-python helper.py --option unconfirmed_contacts --key 00520a82e7e37b882eddcce4055f04f874c5cfcbcf1b306a63d7552dd1f6c65a
+>python helper.py --option unconfirmed_contacts --key 00520a82e7e37b882eddcce4055f04f874c5cfcbcf1b306a63d7552dd1f6c65a
 ```
 
 Contact request (requires secret)
 
 ```
 python helper.py -o add_contact --username slasheks2
+```
+
+## [Multisignatures](Multisignatures.md)
+
+Get information on a multisignature account
+
+```
+>python helper.py -o my_multisig --key dc63877fbdfb538ff1d0ddecb979887f826998ab6907dca0a91e05c98d1602cd
+```
+
+Create a multisignature account
+
+```
+>python helper.py -o create_multisig --lifetime 1 --minimum 2 --keysgroup slasheks tharude
+```
+
+Sign a multisignature transaction
+
+```
+python helper.py -o sign_tx --id 8118789159994910817 
 ```
