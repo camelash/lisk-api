@@ -441,7 +441,7 @@ class liskAPI(object):
             'sign_tx' : '/api/multisignatures/sign',
             # Create a multisignature account.
             # PUT /api/multisignatures
-            'create_multisig' : ' /api/multisignatures',
+            'create_multisig' : '/api/multisignatures',
         }
 
         request_method = {
@@ -461,7 +461,7 @@ class liskAPI(object):
 
             url = '{}{}'.format(self.target_url,targets[rtype])
 
-            #return self.put_check(url,payload,self.headers)
+            return self.put_check(url,payload,self.headers)
 
         elif rtype in request_method['put']:
 

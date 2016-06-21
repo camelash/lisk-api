@@ -358,6 +358,38 @@ def multisigget(api, args):
 
     print json.dumps(api.multisig(args.option, payload), indent=2)
 
+def multisigput(api, args, secret, secret2):
+    ''' put multisignature information '''
+
+    # keys group could be a file or a space separated field with delegatenames
+    keysgroup = []
+    for delegate in args.keysgroup:
+
+        response = api.autoname(delegate)
+
+        if response['success'] == False:
+
+            print "Error, cannot continue. Delegate {} not found"\
+                      .format(delegate)
+            sys.exit(1)
+
+        else:
+
+            keysgroup.append('+{}'.format(response['delegate']['publicKey']))
+
+    payload = {
+        'secret' : secret,
+        'lifetime' : args.lifetime, #request lifetime in hours
+        'min' : args.minimum,       #mine sigs needed to approve
+        'keysgroup' : keysgroup     #array of pubkeys + or -
+        }
+
+    if secret2:
+
+        payload['secondSecret'] = secret2
+
+    print json.dumps(api.multisig(args.option, payload), indent=2)
+
 def main():
     ''' main fuction logic '''
 
@@ -405,13 +437,25 @@ def main():
     parser.add_argument('-id', '--id', dest='all_id', action='store',
                         default='', help='tx id or block id')
 
+    # Multisig
+    parser.add_argument('--lifetime', dest='lifetime', action='store',
+                        type=int,help='request lifetime')
+
+    parser.add_argument('--minimum', dest='minimum', action='store',
+                        type=int,help='Min amount of signatures needed')
+
+    parser.add_argument('--keysgroup', dest='keysgroup', action='store',
+                        nargs='+',help='Min amount of signatures needed')
+
     args = parser.parse_args()
 
     passphrase_options = ['enable_forging', 'disable_forging', 'send',
                           'genpub', 'open_account', 'vote', 'register_delegate',
-                          'register_username', 'add_contact', 'gen_2_sig']
+                          'register_username', 'add_contact', 'gen_2_sig',
+                          'create_multisig']
 
-    twopassphrase_options = ['vote', 'gen_2_sig', 'open_account', 'send']
+    twopassphrase_options = ['vote', 'gen_2_sig', 'open_account', 'send',
+                             'create_multisig']
 
     if not args.option:
 
@@ -484,7 +528,8 @@ def main():
         'put_sign' : ['gen_2_sig'],
         'get_sign' : ['get_signature'],
         'get_delc' : ['forge_check'],
-        'get_mlts' : ['my_multisig','multisig_account']
+        'get_mlts' : ['my_multisig','multisig_account'],
+        'put_mlts' : ['create_multisig']
         }
 
 
@@ -555,6 +600,10 @@ def main():
     elif args.option in targets['get_mlts']:
 
         multisigget(api, args)
+
+    elif args.option in targets['put_mlts']:
+
+        multisigput(api, args, secret, secret2)
 
     # Hybrid call, my voters
     elif args.option == 'my_voters':
