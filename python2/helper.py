@@ -456,8 +456,8 @@ def main():
     parser.add_argument('-s', '--secret', dest='secret', action='store_true',
                         default=False, help='secret pass phrase')
 
-    parser.add_argument('-2s', '--second-secret', dest='second_passphrase',
-                        action='store_true', default=False, help='secret pass phrase')
+    parser.add_argument('--certificate', dest='cert', action='store',
+                        help='If https unsigned cert, point to local cert')
 
     parser.add_argument('--vote-no', dest='vote_no', action='store_true',
                         default=False, help='secret pass phrase')
@@ -504,6 +504,10 @@ def main():
         url = args.url.split(':')
 
         args.url = '{}:{}:{}'.format(url[0],url[1],'7000')
+
+    if args.cert:
+
+        os.environ['REQUESTS_CA_BUNDLE'] = args.cert
 
     # Instanciate
     api = liskAPI.liskAPI(args.url)

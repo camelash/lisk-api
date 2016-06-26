@@ -17,8 +17,6 @@ class liskAPI(object):
 
         except requests.exceptions.ConnectionError as e:
 
-            print e
-
             print "Connection error. {}".format(e.message)
             exit(1)
 
