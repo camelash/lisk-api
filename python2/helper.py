@@ -451,6 +451,10 @@ def main():
     parser.add_argument('-id', '--id', dest='all_id', action='store',
                         default='', help='tx id or block id')
 
+    # Testnet flag
+    parser.add_argument('-t', '--testnet', dest='testnet', action='store_true',
+                        default=False, help='Changes URL to testnet')
+
     # Multisig
     parser.add_argument('--lifetime', dest='lifetime', action='store',
                         type=int,help='request lifetime')
@@ -474,6 +478,12 @@ def main():
     if not args.option:
 
         parser.print_help()
+
+    if args.testnet is True:
+
+        url = args.url.split(':')
+
+        args.url = '{}:{}:{}'.format(url[0],url[1],'7000')
 
     # Instanciate
     api = liskAPI.liskAPI(args.url)
