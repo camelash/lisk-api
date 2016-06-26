@@ -17,6 +17,8 @@ class liskAPI(object):
 
         except requests.exceptions.ConnectionError as e:
 
+            print e
+
             print "Connection error. {}".format(e.message)
             exit(1)
 
@@ -442,8 +444,99 @@ class liskAPI(object):
             return self.put_check(url,payload,self.headers)
 
 
-    def dapps(self):
-        pass
+    def blockchainapp(self, rtype, payload):
+
+        targets = {
+            # Gets a list of apps registered on the network.
+            # GET /api/dapps?category=category&name=name&type=type&link=link&
+            # limit=limit&offset=offset&orderBy=orderBy
+            'app_list' : '/api/dapps',
+            # Gets a specific app by id.
+            # GET /api/dapps/get?id=id
+            'get_app' : '/api/dapps/get?id=',
+            # Searches for apps by keyword(s).
+            # GET /api/dapps/search?q=q&category=category&installed=installed
+            'app_search' : '/api/dapps/search',
+            # Returns a list of installed apps on the requested node.
+            # GET /api/dapps/installed
+            'installed_apps' : '/api/dapps/installed',
+            # Returns a list of installed app ids on the requested node.
+            # GET /api/dapps/installedIds
+            'installed_appsid' : '/api/dapps/installedIds',
+            # Returns a list of app ids currently being installed on the requested node.
+            # GET /api/dapps/installing
+            'installing_apps' : '/api/dapps/installing',
+            # Returns a list of app ids currently being uninstalled on the requested node.
+            # GET /api/dapps/uninstalling
+            'uninstalling_apps' : '/api/dapps/uninstalling',
+            # Returns a list of app ids which are currently launched on the requested node.
+            # GET /api/dapps/launched
+            'launched_apps' : '/api/dapps/launched',
+            # Returns a full list of app categories.
+            # GET /api/dapps/categories
+            'app_categories' : '/api/dapps/categories',
+            # Registers a app.
+            # PUT /api/dapps
+            'register_app' : '/api/dapps',
+            # Installs a app by id on the node.
+            # POST /api/dapps/install
+            'install_app' : '/api/dapps/install',
+            # Uninstalls a app by id from the requested node.
+            # POST /api/dapps/uninstall
+            'uninstall_app' : '/api/dapps/uninstall',
+            # Launches a app by id on the requested node.
+            # POST /api/dapps/launch
+            'launch_app' : '/api/dapps/launch',
+            # Stops a app by id on the requested node.
+            # POST /api/dapps/stop
+            'stop_app' : '/api/dapps/stop',
+
+            }
+
+        request_method = {
+            'get' : ['app_list','get_app','app_search','installed_apps','installed_appsid',
+                    'installing_apps','uninstalling_apps','launched_apps','app_categories'],
+            'put' : ['register_app'],
+            'post' : ['install_app','uninstall_app','launch_app','stop_app'],
+        }
+
+        url = self.target_url + targets[rtype]
+
+        if rtype in request_method['get']:
+
+            if rtype == 'get_app':
+
+                url += payload['id']
+
+            elif rtype == 'app_list' or rtype == 'app_search':
+
+                url += payload['parameters']
+
+            return self.get_check(url)
+
+        elif rtype in request_method['put']:
+
+            if 'secret' in payload and 'username' in payload:
+
+                error = {'error':'not yet implemented'}
+                return error
+                return self.put_check(url,payload,self.headers)
+
+            else:
+
+                error = {'liskAPI': 'Dictionary does not contain required items'}
+                return error
+
+        elif rtype in request_method['post']:
+
+            error = {'error':'not yet implemented'}
+            return error
+
+            r = requests.post(url, data=json.dumps(payload),
+                headers=self.headers)
+
+            return json.loads(r.text)
+
 
     def multisig(self,rtype,payload):
 

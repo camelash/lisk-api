@@ -404,6 +404,26 @@ def multisigpost(api, args, secret, secret2):
 
     print json.dumps(api.multisig(args.option, payload), indent=2)
 
+def appget(api, args):
+    ''' get application information '''
+
+    payload = {
+        'id' : args.all_id,
+        'parameters' : args.q_params
+        }
+
+    if args.option == 'get_app' and not payload['id']:
+
+        print "ID needed --id 12345"
+        sys.exit(1)
+
+    elif args.option == 'app_search' and not payload['parameters']:
+
+        print "Parameters needed --parameters ?q=test"
+        sys.exit(1)
+
+    print json.dumps(api.blockchainapp(args.option, payload), indent=2)
+
 def main():
     ''' main fuction logic '''
 
@@ -554,7 +574,11 @@ def main():
         'get_delc' : ['forge_check'],
         'get_mlts' : ['my_multisig','multisig_account'],
         'post_mlts' : ['sign_tx'],
-        'put_mlts' : ['create_multisig']
+        'put_mlts' : ['create_multisig'],
+        'get_apps' : ['app_list','get_app','app_search','installed_apps','installed_appsid',
+                      'installing_apps','uninstalling_apps','launched_apps','app_categories'],
+        'put_apps' : ['register_app'],
+        'post_app' : ['install_app','uninstall_app','launch_app','stop_app']
         }
 
 
@@ -633,6 +657,10 @@ def main():
     elif args.option in targets['post_mlts']:
 
         multisigpost(api, args, secret, secret2)
+
+    elif args.option in targets['get_apps']:
+
+        appget(api, args)
 
     # Hybrid call, my voters
     elif args.option == 'my_voters':
