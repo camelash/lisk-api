@@ -16,6 +16,21 @@ python helper.py --option account --wallet 15797964559913448387L
 Please be very careful with the options that require secret. There is no turning back. 
 ```
 
+## General Options
+
+When using a self-signed certificate just specify the certificate
+
+```
+python helper.py -o sync -u https://localhost:443 --certificate ".ssl/lisk.crt" 
+
+```
+
+When running the code in testnet use the --testnet or -t option
+
+```
+python helper.py --option app_categories --testnet
+```
+
 ## [Account](Account.md)
 
 Show information of an account based on entering your secret (Requires Secret)
@@ -272,7 +287,7 @@ python helper.py --option contacts --key 00520a82e7e37b882eddcce4055f04f874c5cfc
 Get unconfirmed contacts based on publicKey
 
 ```
->python helper.py --option unconfirmed_contacts --key 00520a82e7e37b882eddcce4055f04f874c5cfcbcf1b306a63d7552dd1f6c65a
+python helper.py --option unconfirmed_contacts --key 00520a82e7e37b882eddcce40<snip>4f874c5cfcbc1f6c65a
 ```
 
 Contact request (requires secret)
@@ -286,13 +301,13 @@ python helper.py -o add_contact --username slasheks2
 Get information on a multisignature account
 
 ```
->python helper.py -o my_multisig --key dc63877fbdfb538ff1d0ddecb979887f826998ab6907dca0a91e05c98d1602cd
+python helper.py -o my_multisig --key dc63877fbdfb538ff1d0ddecb979887f826998ab6907dca0a91e05c98d1602cd
 ```
 
 Create a multisignature account
 
 ```
->python helper.py -o create_multisig --lifetime 1 --minimum 2 --keysgroup slasheks tharude
+python helper.py -o create_multisig --lifetime 1 --minimum 2 --keysgroup slasheks tharude
 ```
 
 Sign a multisignature transaction
