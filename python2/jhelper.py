@@ -178,7 +178,9 @@ try:
                     if (confirmation1['success'] or confirmation1u['success'])\
                         and (confirmation2['success'] or confirmation2u['success']):
 
-                        print "Confirmed transaction {} is on 2 remote nodes".format(tx)
+                        now = datetime.datetime.now()
+                        print "{} Confirmed transaction {} is on 2 remote nodes"
+                            .format(now.strftime("%Y-%m-%d-%H:%M"), tx)
 
                         with open('successout.csv', 'a') as jfho:
 
