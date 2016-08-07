@@ -176,10 +176,10 @@ try:
                     confirmation2u = verify2.transactions('unconfirmed', payload)
 
                     if (confirmation1['success'] or confirmation1u['success'])\
-                        and (confirmation2['success'] or confirmation2u['success']):
+                        or (confirmation2['success'] or confirmation2u['success']):
 
                         now = datetime.datetime.now()
-                        print "{} Confirmed transaction {} is on 2 remote nodes" \
+                        print "{} Confirmed transaction {} is on at least 1 remote nodes" \
                             .format(now.strftime("%Y-%m-%d-%H:%M"), tx)
 
                         with open('successout.csv', 'a') as jfho:
