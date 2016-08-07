@@ -2,7 +2,7 @@
 
 Return the status of the local host
 
-`python helper.py --option status --url http://localhost:7000`
+`python pylisk.py status --url http://localhost:7000`
 
 ```json
 {
@@ -14,7 +14,7 @@ Return the status of the local host
 
 Return the status of origin (login.lisk.io)
 
-`python helper.py --option status --url https://login.lisk.io`
+`python pylisk.py status --url https://login.lisk.io`
 
 ```json
 {
@@ -26,7 +26,7 @@ Return the status of origin (login.lisk.io)
 
 Return the status of the host if https is setup
 
-`python helper.py --option status --url https://localhost:443`
+`python pylisk.py status --url https://localhost:443`
 ```json
 {
   "loaded": true,
@@ -37,7 +37,7 @@ Return the status of the host if https is setup
 
 Return the sync status of login.lisk.io
 
-`python helper.py --option sync --url https://login.lisk.io`
+`python pylisk.py sync --url https://login.lisk.io`
 ```json
 {
   "blocks": 0,
@@ -49,7 +49,7 @@ Return the sync status of login.lisk.io
 
 Return the sync status of localhost
 
-`python helper.py --option sync --url http://localhost:7000`
+`python pylisk.py sync --url http://localhost:7000`
 ```json
 {
   "blocks": 0,
@@ -61,7 +61,7 @@ Return the sync status of localhost
 
 Return the sync status of localhost https if setup
 
-`python helper.py --option sync --url https://localhost:443`
+`python pylisk.py sync --url https://localhost:443`
 ```json
 {
   "blocks": 0,

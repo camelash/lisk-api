@@ -1,6 +1,6 @@
 ## Delegates
 
-`python helper.py -o disable_forging`
+`python pylisk.py disable_forging`
 
 Password:
 
@@ -13,7 +13,7 @@ Password:
 }
 ```
 
-`python helper.py -o enable_forging`
+`python pylisk.py enable_forging`
 
 Password:
 
@@ -28,7 +28,7 @@ Password:
 
 Return voter addresses
 
-`python helper.py --option delegate_voters --key b2961fd27ba57cc50540d043635f80666e11f143d8fa0fb666fe5cd9495230e9`
+`python pylisk.py delegate_voters --key b2961fd27ba57cc50540d043635f80666e11f143d8fa0fb666fe5cd9495230e9`
 
 ```json
 {
@@ -51,7 +51,7 @@ Return voter addresses
 
 Return forged amount and rewards
 
-`python helper.py --option forged --key b57878a79acb36be31171749ec361d16cc0c4a27d2d42f62d6cb0a5405223c69`
+`python pylisk.py forged --key b57878a79acb36be31171749ec361d16cc0c4a27d2d42f62d6cb0a5405223c69`
 
 ```json
 {
@@ -64,7 +64,7 @@ Return forged amount and rewards
 
 Register delegate name and return confimation
 
-python helper.py -o register_delegate -p slasheks_api
+python pylisk.py register_delegate -p slasheks_api
 
 Password:
 
@@ -94,7 +94,7 @@ Password:
 }
 ```
 
-python helper.py --option register_delegate --username slasheks_api
+python pylisk.py register_delegate --username slasheks_api
 
 Password:
 

@@ -1,7 +1,7 @@
 Get the contacts of an account by publiKey
 
 ```
-python helper.py --option contacts --key a69ed828f28695a03558d5c29f96081d20d1ecc0e046e8622793ab2662629901
+python pylisk.py contacts --key a69ed828f28695a03558d5c29f96081d20d1ecc0e046e8622793ab2662629901
 ```
 
 ```json
@@ -20,7 +20,7 @@ python helper.py --option contacts --key a69ed828f28695a03558d5c29f96081d20d1ecc
 Get unconfirmed contacts based on publicKey
 
 ```
-python helper.py --option unconfirmed_contacts --key a6ed31b0dce156779b77f8e1c723af0ce04dbb74520979b76866da56ede4462f
+python pylisk.py unconfirmed_contacts --key a6ed31b0dce156779b77f8e1c723af0ce04dbb74520979b76866da56ede4462f
 ```
 
 ```json
@@ -51,7 +51,7 @@ python helper.py --option unconfirmed_contacts --key a6ed31b0dce156779b77f8e1c72
 Contact request (requires secret)
 
 ```
-python helper.py --option add_contact --username slasheks_api
+python pylisk.py add_contact --username slasheks_api
 Password: 
 Confirming the password. Please type it again.
 Password: 

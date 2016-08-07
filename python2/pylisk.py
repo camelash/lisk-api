@@ -8,7 +8,6 @@ import math
 import os.path
 import argparse
 import getpass
-import liskAPI
 
 
 class liskAPI(object):
@@ -1045,8 +1044,8 @@ def main():
     ''' main fuction logic '''
 
     parser = argparse.ArgumentParser(description='LISK API Interface')
-    parser.add_argument('-o', '--option', dest='option', action='store',
-                        required=True, help='Query option')
+
+    parser.add_argument(dest='option', action='store', help='Query option')
 
     parser.add_argument('-w', '--wallet', dest='wallet', action='store',
                         help='Wallet')
