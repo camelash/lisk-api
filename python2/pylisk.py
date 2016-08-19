@@ -23,8 +23,22 @@ class liskAPI(object):
 
         except requests.exceptions.ConnectionError as e:
 
-            print "Connection error. {}".format(e.message)
-            exit(1)
+            if 'port=8000' in str(e.message):
+
+                print "Connection error. Cannot communicate with port 8000"
+                print "The default option is mainnet for testnet add " \
+                      + "--testnet"
+                sys.exit(1)
+
+            elif 'port=7000' in str(e.message):
+
+                print "Cannot communicate with port 7000. Is LISK running?"
+                sys.exit(1)
+
+            else:
+
+                print "Unknown Connection Error"
+                sys.exit(1)
 
 
     @staticmethod
@@ -628,7 +642,6 @@ class liskAPI(object):
 
         return json.loads(response.text)
 
-
 def loader(api, args):
     '''Loader - sync and status of node'''
     print json.dumps(api.loader(args.option), indent=2)
@@ -667,7 +680,7 @@ def accountput(api, args, account_info, secret, secret2):
 
         print json.dumps(api.account(args.option, payload), indent=2)
 
-    if args.option == 'genpub' and secret:
+    elif args.option == 'genpub' and secret:
 
         pseudobip = re.compile(r'^((\S{3,10})\s?){12,20}')
 
@@ -1069,8 +1082,8 @@ def main():
     parser.add_argument('--username', dest='username', action='store',
                         default='', help='Username/delegate name')
 
-    parser.add_argument('-s', '--secret', dest='secret', action='store_true',
-                        default=False, help='secret pass phrase')
+    parser.add_argument('-s', '--secret', dest='secret', action='store',
+                        help='secret pass phrase')
 
     parser.add_argument('--certificate', dest='cert', action='store',
                         help='If https unsigned cert, point to local cert')
@@ -1114,6 +1127,7 @@ def main():
     if not args.option:
 
         parser.print_help()
+        sys.exit(1)
 
     if args.testnet is True:
 
@@ -1142,20 +1156,38 @@ def main():
                     "
             exit(1)
 
-    secret = ''
-    secret2 = ''
+    secret = None
+    secret2 = None
 
-    if args.secret is True or args.option in passphrase_options:
+    if args.secret or args.option in passphrase_options:
 
-        secret = getpass.getpass()
-        print "Confirming the passphrase. Please type it again."
-        secret1 = getpass.getpass()
+        try:
 
-        # Simple check. needs revamp
-        if secret != secret1:
+            secret = os.environ['LISK_SECRET']
 
-            print "Passprase does not match. Please try again"
-            exit(1)
+        except KeyError:
+
+            pass
+
+        if secret:
+
+            pass
+
+        elif args.secret:
+
+            secret = args.secret
+
+        else:
+
+            secret = getpass.getpass()
+            print "Confirming the passphrase. Please type it again."
+            secret1 = getpass.getpass()
+
+            # Simple check. needs revamp
+            if secret != secret1:
+
+                print "Passprase does not match. Please try again"
+                exit(1)
 
         account_payload = {"secret" : secret}
         account_info = api.account('open_account', account_payload)
@@ -1317,6 +1349,10 @@ def main():
     elif args.option == 'autoname':
 
         autoname(api, args)
+
+    else:
+
+        print "Option {} Not found".format(args.option)
 
 
 
