@@ -5,7 +5,7 @@
 
 Return account information given a wallet address
 
-`python pylisk.py account --wallet 12890373581776525214L`
+`python pylisk account --wallet 12890373581776525214L`
 
 ```json
 {
@@ -27,7 +27,7 @@ Return account information given a wallet address
 
 Return the balance of a given address
 
-`python pylisk.py balance --wallet 12890373581776525214L`
+`python pylisk balance --wallet 12890373581776525214L`
 ```json
 {
   "unconfirmedBalance": 59540000000,
@@ -38,7 +38,7 @@ Return the balance of a given address
 
 Return publicKey of a given address
 
-`python pylisk.py pubkey --wallet 12890373581776525214L`
+`python pylisk pubkey --wallet 12890373581776525214L`
 ```json
 {
   "publicKey": "a69ed828f28695a03558d5c29f96081d20d1ecc0e046e8622793ab2662629901",
@@ -48,7 +48,7 @@ Return publicKey of a given address
 
 Return public key generated given a secret
 
-`python pylisk.py genpub`
+`python pylisk genpub`
 
 Password: /type pass here/
 
@@ -62,7 +62,7 @@ Password: /type pass here/
 
 Return account information by opening
 
-`python pylisk.py open_account`
+`python pylisk open_account`
 
 Password: /type pass here/
 
@@ -86,7 +86,7 @@ Password: /type pass here/
 
 Will return account's delegates by address.
 
-`python pylisk.py delegates_by_account --wallet 12475940823804898745L`
+`python pylisk delegates_by_account --wallet 12475940823804898745L`
 ```json
 {
   "delegates": [
@@ -117,7 +117,7 @@ Will return account's delegates by address.
 ```
 Vote for accounts, API supports vote as list from pubkey file.
 
-`python pylisk.py vote --key`
+`python pylisk vote --key`
 
 Password: /type pass here/
 

@@ -2,7 +2,7 @@
 
 Return peerlist no options (supports sorting options | cut for brevity)
 
-`python pylisk.py peer_list`
+`python pylisk peer_list`
 
 ```json
 {
@@ -32,7 +32,7 @@ Return peerlist no options (supports sorting options | cut for brevity)
 
 Return version running on target
 
-`python pylisk.py peer_version`
+`python pylisk peer_version`
 
 ```json
 {
@@ -44,7 +44,7 @@ Return version running on target
 
 Return peer information (not working)
 
-`python pylisk.py peer_ip`
+`python pylisk peer_ip`
 
 ```json
 {

@@ -2,7 +2,7 @@
 
 Return transactions per block ID (supports full sorting options)
 
-`python pylisk.py blocktx --parameters ?blockId=3978197175682889993`
+`python pylisk blocktx --parameters ?blockId=3978197175682889993`
 
 ```json
 {
@@ -52,7 +52,7 @@ Return transactions per block ID (supports full sorting options)
 ```
 Return confirmation of send transaction
 
-`python pylisk.py send --destination-id slasheks_i --amount 1`
+`python pylisk send --destination-id slasheks_i --amount 1`
 
 Password: /type passphrase here/
 
@@ -67,7 +67,7 @@ Password: /type passphrase here/
 
 Get transaction information by transaction ID
 
-`python pylisk.py get_tx --id 1242621300313617250`
+`python pylisk get_tx --id 1242621300313617250`
 
 ```json
 {
@@ -96,7 +96,7 @@ Get transaction information by transaction ID
 
 Get unconfirmed transaction by ID
 
-`python pylisk.py unconfirmed --id 1792913617361330271`
+`python pylisk unconfirmed --id 1792913617361330271`
 
 ```json
 {
@@ -125,7 +125,7 @@ Get unconfirmed transaction by ID
 
 Return all unconfirmed transactions
 
-`python pylisk.py unconfirmed_all`
+`python pylisk unconfirmed_all`
 
 ```json
 {

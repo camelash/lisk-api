@@ -1,7 +1,7 @@
 Get the application list of localhost
 
 ```
-python pylisk.py app_list 
+python pylisk app_list 
 ```
 ```json
 {
@@ -52,7 +52,7 @@ python pylisk.py app_list
 ```
 Get Blockchain App by Transaction ID
 ```
-python pylisk.py get_app --id 17251328029729996639 
+python pylisk get_app --id 17251328029729996639 
 ```
 ```json
 {
@@ -73,7 +73,7 @@ python pylisk.py get_app --id 17251328029729996639
 Search for apps (Variable parameter option)
 
 ```
-python pylisk.py app_search --parameter "?q=installed=1" 
+python pylisk app_search --parameter "?q=installed=1" 
 
 ```
 ```json
@@ -86,7 +86,7 @@ python pylisk.py app_search --parameter "?q=installed=1"
 Get installed blockchain applications
 
 ```
-python pylisk.py installed_apps 
+python pylisk installed_apps 
 
 ```
 
@@ -99,7 +99,7 @@ python pylisk.py installed_apps
 
 Get the IDs of installed blockchain applications
 ```
-python pylisk.py installed_appsid 
+python pylisk installed_appsid 
 ```
 ```json
 {
@@ -109,7 +109,7 @@ python pylisk.py installed_appsid
 ```
 
 ```
-python pylisk.py installing_apps  
+python pylisk installing_apps  
 ```
 ```json
 {
@@ -120,7 +120,7 @@ python pylisk.py installing_apps
 
 Get bblockchain applications that are uninstalling
 ```
-python pylisk.py uninstalling_apps 
+python pylisk uninstalling_apps 
 ```
 ```json
 {
@@ -131,7 +131,7 @@ python pylisk.py uninstalling_apps
 
 Get all the launched apps
 ```
-python pylisk.py launched_apps     
+python pylisk launched_apps     
 ```
 ```json
 {
@@ -143,7 +143,7 @@ python pylisk.py launched_apps
 Get the blockchain application categories
 
 ```
-python pylisk.py app_categories 
+python pylisk app_categories 
 ```
 ```json
 {
