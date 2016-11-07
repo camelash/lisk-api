@@ -1053,10 +1053,167 @@ def appget(api, args):
 
     print json.dumps(api.blockchainapp(args.option, payload), indent=2)
 
+def usage():
+
+    return '''
+
+    ##### Account options ###################################
+
+    ## Show information of an account (requires secret)
+    pylisk open_account
+
+    ## Get the balance of an account by wallet address
+    pylisk balance --wallet <wallet address L>
+
+    ## Get the publicKey of an account by wallet address
+    pylisk pubkey --wallet <wallet address L>
+
+    ## Generate an account based on secret (requires secret)
+    pylisk genpub
+
+    ## Get account information based on wallet address
+    pylisk account --wallet <wallet address L>
+
+    ## Get delegates by account wallet address
+    pylisk delegates_by_account --wallet <wallet address L>
+
+    ## Vote for accounts in a file.
+    ## File can be pubkey, delegate name or wallet address
+    pylisk vote --vote-file 33.txt --vote-yes
+
+    ## Unvote
+    pylisk vote --vote-file 33.txt --vote-no
+
+    ##### Loader options ####################################
+
+    ## Get full peer list
+    pylisk peer_list
+
+    ## Get peers filtered
+    pylisk peer_list --parameters "?version=0.5.1b"
+
+    ## Get the version of a peer (can be used with the --url flag)
+    pylisk peer_version
+
+    ## Get peer information by IP (work in progress)
+    pylisk peer_ip
+
+    ##### Block options #####################################
+
+    ## Get block by id
+    pylisk blockid --parameters <block id>
+
+    ## Get all blocks
+    pylisk all_blocks
+
+    ## Get blocks fileters by parameters
+    pylisk all_blocks --parameters "?offset=0&limit=2"
+
+    ## Get fee details
+    pylisk fee
+
+    ## Get block height
+    pylisk height
+
+    ## Get my forged blocks (custom search)
+    pylisk my_blocks --key <publicKey>
+
+    ##### Transaction options ################################
+
+    ## Get information of a block by blockId
+    pylisk blocktx --parameters "?blockId=<block Id>"
+
+    ## Send a transaction with 1 lisk to specified recipient
+    pylisk send --destination-id slasheks --amount 1
+
+    ## Get information on a transaction ID
+    pylisk get_tx --id <transaction id>
+
+    ## Get information on an unconfirmed transaction by ID
+    pylisky unconfirmed --id <transaction id>
+
+    ## Get all unconfirmed transactions
+    pylisk unconfirmed_all
+
+    ##### Delegate options #####################################
+
+    ## Disable forging on the localhost (can be used with the --url flag,
+    ##  Requires secret)
+    pylisk disable_forging
+
+    ## Enable forging on the localhost (can be used with the --url flag,
+    ## Requires secret)
+    pylisk enable_forging
+
+    ## Delegate list filtered (order by rank only display 2)
+    pylisk delegate_list -p "?orderBy=rate&limit=2"
+
+    ## Get the delegate votes based on public key of an account
+    pylisk delegate_voters --key <pubKey>
+
+    ## Get forged information on an account based on public key
+    pylisk forged --key <pubkey>
+
+    ## Register a delegate name (requires secret)
+    pylisk register_delegate --username slasheks_api
+
+    ##### Contacts ############################################
+
+    ## Get the contacts of an account by publiKey
+    pylisk contacts --key <pubkey>
+
+    ## Get unconfirmed contacts based on publicKey
+    pylisk unconfirmed_contacts --key <pubkey>
+
+    ## Contact request (requires secret)
+    pylisk add_contact --username slasheks2
+
+    ##### Multisignature options ##############################
+
+    ## Get information on a multisignature account
+    pylisk my_multisig --key <pubkey>
+
+    ## Create a multisignature account
+    pylisk create_multisig --lifetime 1 --minimum 2 --keysgroup slasheks gr33nDrag0n 
+
+    ## Sign a multisignature transaction
+    pylisk sign_tx --id <txId>
+
+    ##### Blockchain App options ###############################
+
+    ## Get application lisk
+    pylisk app_list
+
+    ## Get Blockchain App by Transaction ID
+    pylisk get_app --id <txId>
+
+    ## Search for apps (Variable parameter option)
+    pylisk app_search --parameter "?q=installed=1"
+
+    ## Get installed blockchain applications
+    pylisk installed_apps
+
+    ## Get the IDs of installed blockchain applications
+    pylisk installed_appsid
+
+    ## Get apps that are currently installing
+    pylisk installing_apps
+
+    ## Get bblockchain applications that are uninstalling
+    pylisk uninstalling_apps
+
+    ## Get all the launched apps
+    pylisk launched_apps
+
+    ## Get the blockchain application categories
+    pylisk app_categories
+    '''
+
 def main():
     ''' main fuction logic '''
 
-    parser = argparse.ArgumentParser(description='LISK API Interface')
+    parser = argparse.ArgumentParser(description='LISK API Interface',
+                                     usage=usage())
 
     parser.add_argument(dest='option', action='store', help='Query option')
 
@@ -1353,6 +1510,7 @@ def main():
     else:
 
         print "Option {} Not found".format(args.option)
+        parser.print_help()
 
 
 
