@@ -191,11 +191,23 @@ class liskAPI(object):
                 # Get list of unconfirmed transactions.
                 # GET /api/transactions/unconfirmed
                 'unconfirmed_all' : '/api/transactions/unconfirmed',
+                # Gets a list of queued transactions.
+                # GET /api/transactions/queued
+                'queued_all': '/api/transactions/queued',
+                # Get queued transaction that matches the provided id.
+                # GET /api/transactions/queued/get?id=id
+                'queued': '/api/transactions/queued/get?id=',
+                # get all multisig
+                'multisignature_all': '/api/transactions/multisignatures',
+                # get one multisig
+                'multisignature': '/api/transactions/multisignatures/get?id='
             }
 
 
         req_methods = {
-               'get' : ['blocktx','get_tx','unconfirmed','unconfirmed_all'],
+               'get' : ['blocktx','get_tx','unconfirmed','unconfirmed_all',
+                        'queued', 'queued_all', 'multisignature_all',
+                        'multisignature'],
                'put' : ['send']
             }
 
@@ -211,8 +223,30 @@ class liskAPI(object):
 
                 url += payload['parameters']
 
-            elif not payload['id'] and not payload['parameters']:
-                pass
+            elif rtype == 'multisignature_all':
+
+                url = '{}{}'.format(self.target_url, targets[rtype])
+
+            elif rtype == 'multisignature':
+
+                try:
+
+                    url = '{}{}{}'.format(self.target_url, targets[rtype],
+                                          payload['id'])
+                except KeyError:
+
+                    return "No id provided with multisignature"
+
+
+            else:
+
+                if rtype == 'queued' and not payload['parameters']:
+
+                    return "unconfirmed option requires a -p parameter"
+
+                else:
+
+                    url = url
 
             return self.get_check(url)
 
@@ -1135,6 +1169,18 @@ def usage():
     ## Get all unconfirmed transactions
     pylisk unconfirmed_all
 
+    ## Get all queued transactions
+    pylisk queued_all
+
+    ## Get queued transaction by ID
+    pylisk queued --id <idNum>
+
+    # Get all multisignatures
+    pylisk multisignature_all
+
+    ## Get multisignatures by transaction ID
+    pylisk multisignature --id 9082231970708809096
+
     ##### Delegate options #####################################
 
     ## Disable forging on the localhost (can be used with the --url flag,
@@ -1368,7 +1414,9 @@ def main():
         'get_acct' : ['balance', 'account', 'delegates_by_account', 'pubkey'],
         'put_acct' : ['genpub', 'vote', 'open_account'],
         'get_peer' : ['peer_ip', 'peer_list', 'peer_version'],
-        'get_txid' : ['blocktx', 'get_tx', 'unconfirmed', 'unconfirmed_all'],
+        'get_txid' : ['blocktx', 'get_tx', 'unconfirmed', 'unconfirmed_all',
+                      'queued', 'queued_all',  'multisignature',
+                      'multisignature_all'],
         'put_txid' : ['send'],
         'put_delg' : ['register_delegate'],
         'post_del' : ['disable_forging', 'enable_forging'],
@@ -1384,8 +1432,9 @@ def main():
         'get_mlts' : ['my_multisig','multisig_account'],
         'post_mlts' : ['sign_tx'],
         'put_mlts' : ['create_multisig'],
-        'get_apps' : ['app_list','get_app','app_search','installed_apps','installed_appsid',
-                      'installing_apps','uninstalling_apps','launched_apps','app_categories'],
+        'get_apps' : ['app_list','get_app','app_search','installed_apps',
+                      'installed_appsid', 'installing_apps',
+                      'uninstalling_apps', 'launched_apps', 'app_categories'],
         'put_apps' : ['register_app'],
         'post_app' : ['install_app','uninstall_app','launch_app','stop_app']
         }
