@@ -662,7 +662,7 @@ class liskAPI(object):
 
         return voters
 
-    def forge_check(self,delegate):
+    def forge_check(self, delegate):
         ''' check forging status '''
 
         # First grab public key from delegate name
@@ -675,6 +675,57 @@ class liskAPI(object):
                                 .format(self.target_url, pubkey))
 
         return json.loads(response.text)
+
+
+    def get_network_height(self, nethash, port, version):
+        '''
+        Get the height of the network
+        '''
+
+        data = {
+            'version' : '{}'.format(version),
+            'Accept': '*/*',
+            'Connection': 'close',
+            'os': 'linux3.13.0-85-generic',
+            'port': '{}'.format(port),
+            'accept': 'application/json',
+            'User-Agent': 'https://github.com/blakeembrey/popsicle',
+            'Accept-Encoding': 'gzip, deflate',
+            'nethash': nethash
+        }
+
+        height_list = []
+
+        # Get the peer list from login lisk io
+        peer_list = '{}/peer/list'.format(self.target_url)
+
+        #
+        peer_height = 'http://{}:{}/peer/height'
+
+        try:
+            resp = requests.get(peer_list, headers=data).json()
+        except ValueError:
+            pass
+
+        for peer in resp['peers']:
+
+            try:
+                res = requests.get(peer_height.format(peer['ip'], port),
+                                   headers=data,  timeout=0.3).json()
+                height_list.append(res['height'])
+            except requests.exceptions.ConnectionError:
+                pass
+            except requests.exceptions.Timeout:
+                pass
+            except KeyError:
+                pass
+            except ValueError:
+                pass
+
+        if height_list:
+            return max(height_list)
+        else:
+            return 0
 
 def loader(api, args):
     '''Loader - sync and status of node'''
@@ -1087,6 +1138,26 @@ def appget(api, args):
 
     print json.dumps(api.blockchainapp(args.option, payload), indent=2)
 
+def getnetheight(api, args):
+    ''' Get the height of the network '''
+
+    try:
+
+        with open(args.config) as cfh:
+
+            config = json.load(cfh)
+
+    except IOError:
+
+        sys.exit('Could not open the config file')
+
+
+    nethash = config['nethash']
+    port = config['port']
+    version = config['version']
+
+    print api.get_network_height(nethash, port, version)
+
 def usage():
 
     return '''
@@ -1253,6 +1324,17 @@ def usage():
 
     ## Get the blockchain application categories
     pylisk app_categories
+
+
+    ##### Custom ###############################
+    ## name to delegate info
+    pylisk autoname --username slasheks
+
+    ## Get all voters for account
+    pylisk my_voters --username slasheks
+
+    ## Get the network height
+    pylisk networkheight --config /opt/lisk/lisk-test/config.json
     '''
 
 def main():
@@ -1302,6 +1384,11 @@ def main():
 
     parser.add_argument('-id', '--id', dest='all_id', action='store',
                         default='', help='tx id or block id')
+
+    # Network height
+    parser.add_argument('-c', '--config', dest='config', action='store',
+                        help='tx id or block id')
+
 
     # Testnet flag
     parser.add_argument('-t', '--testnet', dest='testnet', action='store_true',
@@ -1555,6 +1642,10 @@ def main():
     elif args.option == 'autoname':
 
         autoname(api, args)
+
+    elif args.option == 'networkheight':
+
+        getnetheight(api, args)
 
     else:
 
