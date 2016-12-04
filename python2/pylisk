@@ -985,13 +985,18 @@ def delegatespost(api, args, secret):
     payload = {'secret' : secret}
     print json.dumps(api.delegates(args.option, payload), indent=2)
 
-def delegatesput(api, args, secret):
+def delegatesput(api, args, secret, secret2):
     ''' delegate modification options '''
 
     payload = {
         'secret': secret,
         'username' : args.username
         }
+
+    if secret2:
+
+        payload['secondSecret'] = secret2
+
     print json.dumps(api.delegates(args.option, payload), indent=2)
 
 def usernameput(api, args, secret, secret2):
@@ -1412,7 +1417,7 @@ def main():
                           'create_multisig','sign_tx']
 
     twopassphrase_options = ['vote', 'gen_2_sig', 'open_account', 'send',
-                             'create_multisig','sign_tx']
+                             'create_multisig','sign_tx', 'register_delegate']
 
     if not args.option:
 
@@ -1571,7 +1576,7 @@ def main():
 
     elif args.option in targets['put_delg']:
 
-        delegatesput(api, args, secret)
+        delegatesput(api, args, secret, secret2)
 
     # Usernames
     elif args.option in targets['put_usrn']:
