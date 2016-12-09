@@ -389,11 +389,14 @@ class liskAPI(object):
                 # Get forged by account
                 # Get amount forged by account.
                 'forged' : '/api/delegates/forging/getForgedByAccount?generatorPublicKey=',
+
+                # Get next forging delegates
+                'next_forgers': '/api/delegates/getNextForgers'
             }
 
         request_method = {
                 'get' : ['delegate_list','delegate_by_tx','votes_by_account',
-                    'forged','delegate_voters'],
+                    'forged','delegate_voters', 'next_forgers'],
                 'put' : ['register_delegate'],
                 'post' : ['enable_forging','disable_forging']
                 }
@@ -1513,7 +1516,7 @@ def main():
         'put_delg' : ['register_delegate'],
         'post_del' : ['disable_forging', 'enable_forging'],
         'get_delg' : ['forged', "delegate_list", "delegate_by_tx",
-                      "votes_by_account", "delegate_voters"],
+                      "votes_by_account", "delegate_voters", 'next_forgers'],
         'get_blk': ['my_blocks', 'blockid', 'all_blocks', 'fee', 'height'],
         'put_usrn' : ['register_username'],
         'get_cntc' : ['contacts', 'unconfirmed_contacts'],
